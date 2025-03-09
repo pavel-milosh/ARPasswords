@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Black">
+    <option name="sdkName" value="Python 3.13 (ARPasswords)" />
+  </component>
+  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.13" project-jdk-type="Python SDK" />
+  <component name="RuffConfigService">
+    <option name="alwaysUseGlobalRuff" value="true" />
+    <option name="globalRuffExecutablePath" value="/Library/Frameworks/Python.framework/Versions/3.13/bin/ruff" />
+    <option name="runRuffOnSave" value="true" />
+    <option name="useRuffFormat" value="true" />
+    <option name="useRuffServer" value="true" />
+  </component>
+</project>
