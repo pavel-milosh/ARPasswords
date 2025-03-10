@@ -1,0 +1,29 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ru\n"
+
+msgid "info"
+msgstr ""
+"Информация о записи <code>{label}</code>:<b>\n"
+"\t\t\t\t\t\tЛогин: <code>{login}</code>\n"
+"\t\t\t\t\t\tПочта: <code>{email}</code>\n"
+"\t\t\t\t\t\tНомер телефона: <code>{phone}</code>\n"
+"\t\t\t\t\t\tПароль: <code>{password}</code>\n"
+"\t\t\t\t\t\tURL: <code>{url}</code>\n"
+"\t\t\t\t\t\tTOTP: <code>{totp}</code>\n"
+"\t\t\t\t\t\tКоды восстановления: <code>{backup_codes}</code>"
+"</b>"
+
+msgid "change_?"
+msgstr "Изменить {parameter}"
+
+msgid "enter_new_?"
+msgstr "Введите новое значение для параметра <b>\"{parameter}\"</b>"
+
+msgid "no_records_found"
+msgstr "Записи не найдены"
+
+msgid "choose_record"
+msgstr "Выберите нужную запись:"

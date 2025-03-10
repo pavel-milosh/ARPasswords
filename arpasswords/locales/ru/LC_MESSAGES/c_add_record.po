@@ -1,0 +1,11 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ru\n"
+
+msgid "initial"
+msgstr "Пожалуйста, введите метку для записи. <b>Она должна быть уникальной!</b>"
+
+msgid "enter_password"
+msgstr "Введите пароль или воспользуйтесь кнопкой <i>\"Сгенерировать\"</i> снизу"

@@ -30,7 +30,7 @@ def encrypt(text: str, key: str) -> str:
 
     key_256: bytes = _derive_key(key, salt)
 
-    aesgcm = AESGCM(key_256)
+    aesgcm: AESGCM = AESGCM(key_256)
     ciphertext: bytes = aesgcm.encrypt(nonce, text.encode(), None)
 
     encrypted_data: bytes = salt + nonce + ciphertext
@@ -47,7 +47,7 @@ def decrypt(encrypted: str, key: str) -> str:
 
     key_256: bytes = _derive_key(key, salt)
 
-    aesgcm = AESGCM(key_256)
+    aesgcm: AESGCM = AESGCM(key_256)
     plaintext: bytes = aesgcm.decrypt(nonce, ciphertext, None)
 
     return plaintext.decode()

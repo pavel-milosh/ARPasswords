@@ -1,0 +1,29 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ru\n"
+
+msgid "label"
+msgstr "метка"
+
+msgid "login"
+msgstr "логин"
+
+msgid "email"
+msgstr "почта"
+
+msgid "phone"
+msgstr "номер телефона"
+
+msgid "password"
+msgstr "пароль"
+
+msgid "url"
+msgstr "URL"
+
+msgid "totp"
+msgstr "TOTP"
+
+msgid "backup_codes"
+msgstr "коды восстановления"

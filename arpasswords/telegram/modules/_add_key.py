@@ -7,7 +7,7 @@ from aiogram.types import Message
 from aiogram.filters import Command
 
 from .. import _base, _decorators
-from ... import localization
+from ...local import _ as local
 
 
 class AddKey(StatesGroup):
@@ -16,16 +16,16 @@ class AddKey(StatesGroup):
 
 
 @_base.dp.message(Command("key"))
-@_decorators.message_checker(ignore_key=True)
+@_decorators.messages_controller(ignore_key=True)
 async def _key(message: Message, state: FSMContext) -> None:
     await state.update_data(
-        bot_message=await message.answer(localization.key.initial)
+        bot_message=await message.answer(local("c_key", "initial"))
     )
     await state.set_state(AddKey.active)
 
 
 @_base.dp.message(AddKey.active)
-@_decorators.message_checker(ignore_key=True)
+@_decorators.messages_controller(ignore_key=True)
 async def _key_set(message: Message, state: FSMContext) -> None:
     key: str = message.text
     data: dict = await state.get_data()
@@ -33,16 +33,15 @@ async def _key_set(message: Message, state: FSMContext) -> None:
     if len(key) < 8:
         await bot_message.delete()
         await state.update_data(
-            bot_message=await message.answer(localization.key.incorrect)
+            bot_message=await message.answer(local("c_key", "incorrect"))
         )
-        await message.delete()
         return
     keyring.set_password("keys", str(message.from_user.id), message.text)
     await bot_message.edit_text(
-        localization.key.deleting(
-            keyring.get_password("keys", str(message.from_user.id))
-        )
+        local("c_key", "deleting").format(
+            key=keyring.get_password("keys", str(message.from_user.id))
+        ),
     )
     await asyncio.sleep(10)
-    await message.delete()
-    await bot_message.edit_text(localization.key.done)
+    await bot_message.edit_text(local("c_key", "done"))
+    await state.clear()

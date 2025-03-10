@@ -1,0 +1,20 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ru\n"
+
+msgid "start"
+msgstr "Меню пользователя"
+
+msgid "key"
+msgstr "Установка ключа шифрования"
+
+msgid "generate_password"
+msgstr "Генерация пароля"
+
+msgid "add_record"
+msgstr "Добавить новую запись"
+
+msgid "show_records"
+msgstr "Отобразить все записи"

@@ -1,0 +1,17 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ru\n"
+
+msgid "initial"
+msgstr "Придумайте ключ шифрования. Это должен быть <b>надежный</b> пароль, длинной <b>минимум 8 символов. !ВАЖНО! При потере ключа доступ к хранилищу будет утрачен</b>"
+
+msgid "incorrect"
+msgstr "Недопустимый ключ. Введите другой"
+
+msgid "deleting"
+msgstr "Ключ <code>{key}</code> установлен. Сообщение удалится через <b>10 секунд...</b>"
+
+msgid "done"
+msgstr "<b>Ключ шифрования установлен</b>"

@@ -1,0 +1,11 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ru\n"
+
+msgid "records"
+msgstr "записи"
+
+msgid "delete_message"
+msgstr "Удалить сообщение"
