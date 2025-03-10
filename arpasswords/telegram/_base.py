@@ -3,6 +3,7 @@ from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from aiogram.types import BotCommand
 
+from . import _schedule
 from .. import config
 from ..local import _ as local
 
@@ -15,7 +16,8 @@ dp: Dispatcher = Dispatcher()
 router: Router = Router()
 
 
-async def start_polling() -> None:
+async def start() -> None:
+    await _schedule.setup()
     # noinspection PyProtectedMember
     commands: dict[str, str] = dict(local("commands")._catalog)
     await bot.set_my_commands(

@@ -11,7 +11,7 @@ from .... import database
 from ....local import _ as local
 
 
-@_base.router.message()
+# @_base.router.message()
 @_decorators.messages_controller()
 async def _find(message: Message) -> None:
     async with aiosqlite.connect(os.path.join("users", f"{message.from_user.id}.db")) as db:

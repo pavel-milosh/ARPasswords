@@ -24,7 +24,7 @@ class AddRecord(StatesGroup):
     user_message: Message
 
 
-@_base.dp.message(Command("add_record"))
+@_base.router.message(Command("add_record"))
 @_decorators.messages_controller()
 async def _add_record(message: Message, state: FSMContext) -> None:
     await state.set_state(AddRecord.label_state)
@@ -33,7 +33,7 @@ async def _add_record(message: Message, state: FSMContext) -> None:
     )
 
 
-@_base.dp.message(AddRecord.label_state)
+@_base.router.message(AddRecord.label_state)
 @_decorators.messages_controller()
 async def _add_record_label(message: Message, state: FSMContext) -> None:
     await state.set_state(AddRecord.password_state)
@@ -42,7 +42,7 @@ async def _add_record_label(message: Message, state: FSMContext) -> None:
     await bot_message.edit_text(local("c_add_record", "enter_password"))
 
 
-@_base.dp.message(AddRecord.password_state)
+@_base.router.message(AddRecord.password_state)
 @_decorators.messages_controller()
 async def _add_record_password(message: Message, state: FSMContext) -> None:
     await state.update_data(password=message.text)

@@ -8,7 +8,7 @@ msgid "start"
 msgstr "Меню пользователя"
 
 msgid "key"
-msgstr "Установка ключа шифрования"
+msgstr "Настройка ключа шифрования"
 
 msgid "generate_password"
 msgstr "Генерация пароля"

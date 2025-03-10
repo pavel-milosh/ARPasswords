@@ -16,12 +16,6 @@ msgstr ""
 "\t\t\t\t\t\tКоды восстановления: <code>{backup_codes}</code>"
 "</b>"
 
-msgid "change_?"
-msgstr "Изменить {parameter}"
-
-msgid "enter_new_?"
-msgstr "Введите новое значение для параметра <b>\"{parameter}\"</b>"
-
 msgid "no_records_found"
 msgstr "Записи не найдены"
 

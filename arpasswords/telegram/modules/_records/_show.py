@@ -10,7 +10,7 @@ from .... import database
 from ....local import _ as local
 
 
-@_base.dp.message(Command("show_records"))
+@_base.router.message(Command("show_records"))
 @_decorators.messages_controller()
 async def _command_show_records(message: Message) -> None:
     await records(message.from_user.id)

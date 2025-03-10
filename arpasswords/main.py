@@ -7,7 +7,7 @@ from arpasswords import telegram
 async def main() -> None:
     if not os.path.exists("users"):
         os.mkdir("users")
-    await telegram.start_polling()
+    await telegram.start()
 
 
 if __name__ == "__main__":

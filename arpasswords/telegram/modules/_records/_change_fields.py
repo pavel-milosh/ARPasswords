@@ -20,7 +20,7 @@ class ChangeFields(StatesGroup):
     bot_message: Message
 
 
-@_base.dp.callback_query(F.data.startswith("change_"))
+@_base.router.callback_query(F.data.startswith("change_"))
 async def _change(callback: CallbackQuery, state: FSMContext) -> None:
     parameter: str = callback.data.split()[0].replace("change_", "")
     await state.set_state(ChangeFields.active)
@@ -31,14 +31,14 @@ async def _change(callback: CallbackQuery, state: FSMContext) -> None:
     await callback.message.delete()
     await state.update_data(
         bot_message=await callback.message.answer(
-            local("records", "enter_new_?").format(
+            local("common", "enter_new_?").format(
                 parameter=local("parameters", parameter).capitalize()
             )
         )
     )
     await callback.answer()
 
-@_base.dp.message(ChangeFields.active)
+@_base.router.message(ChangeFields.active)
 @_decorators.messages_controller()
 async def _change_active(message: Message, state: FSMContext) -> None:
     key: str = keyring.get_password("keys", str(message.from_user.id))

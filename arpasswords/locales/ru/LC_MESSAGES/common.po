@@ -9,3 +9,9 @@ msgstr "записи"
 
 msgid "delete_message"
 msgstr "Удалить сообщение"
+
+msgid "change_?"
+msgstr "Изменить {parameter}"
+
+msgid "enter_new_?"
+msgstr "Введите новое значение для параметра <b>\"{parameter}\"</b>"

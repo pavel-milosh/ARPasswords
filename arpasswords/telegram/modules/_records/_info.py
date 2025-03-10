@@ -5,12 +5,12 @@ import aiosqlite
 from aiogram import F
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery, Message
 
-from ... import _base
+from ... import _base, _buttons
 from .... import database
 from ....local import _ as local
 
 
-@_base.dp.callback_query(F.data.startswith("record_info"))
+@_base.router.callback_query(F.data.startswith("record_info"))
 async def _callback_record_info(callback: CallbackQuery) -> None:
     await callback.message.delete()
     await record(callback.from_user.id, callback.data.split()[1])
@@ -37,24 +37,19 @@ async def record(user_id: int, label: str) -> None:
         totp=totp,
         backup_codes=backup_codes
     )
-    bot_message: Message = await _base.bot.send_message(user_id, text)
+    bot_message: Message = await _base.bot.send_message(user_id, "\u200B")
     # noinspection PyProtectedMember
     buttons: list[list[InlineKeyboardButton]] = [
         [
             InlineKeyboardButton(
-                text=local("records", "change_?").format(parameter=value),
+                text=local("common", "change_?").format(parameter=value),
                 callback_data=f"change_{key} {label}"
             )
         ]
         for key, value in dict(local("parameters")._catalog).items()
-        if key not in ("", "label")
+        if key not in ("", "label", "key")
     ]
-    buttons.insert(
-        0,
-        [InlineKeyboardButton(
-            text=local("common", "delete_message"),
-            callback_data=f"delete_message {bot_message.message_id}")]
-    )
+    buttons.insert(0, [await _buttons.delete_message(bot_message.message_id)])
     await bot_message.edit_text(
         text=text,
         reply_markup=InlineKeyboardMarkup(inline_keyboard=buttons)

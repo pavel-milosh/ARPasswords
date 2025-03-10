@@ -4,6 +4,9 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: ru\n"
 
+msgid "key"
+msgstr "ключ"
+
 msgid "label"
 msgstr "метка"
 
