@@ -11,12 +11,12 @@ from .. import database
 def messages_controller(*, ignore_key: bool = False) -> Callable:
     def decorator(func: Callable) -> Callable:
         @functools.wraps(func)
-        async def wrapper(message: Message, *args: tuple, **kwargs: dict) -> Callable:
-            user_id: int = message.from_user.id
-            if not os.path.exists(os.path.join("users", f"{user_id}.db")):
-                await database.create(user_id)
+        async def wrapper(message: Message, *args, **kwargs) -> Callable:
+            kwargs["key"] = keyring.get_password("keys", str(message.from_user.id))
+            if not os.path.exists(os.path.join("users", f"{message.from_user.id}.db")):
+                await database.create(message.from_user.id)
 
-            if not ignore_key and keyring.get_password("keys", str(user_id)) is None:
+            if not ignore_key and kwargs["key"] is None:
                 await message.reply(
                     "Необходимо установить ключ шифрования! "
                     "Воспользуйтесь командой /key"

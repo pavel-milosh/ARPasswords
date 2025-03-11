@@ -12,7 +12,7 @@ from ....local import _ as local
 
 @_base.router.message(Command("show_records"))
 @_decorators.messages_controller()
-async def _command_show_records(message: Message) -> None:
+async def _command_show_records(message: Message, **kwargs) -> None:
     await records(message.from_user.id)
 
 

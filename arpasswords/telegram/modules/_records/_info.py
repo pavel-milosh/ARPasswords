@@ -37,7 +37,7 @@ async def record(user_id: int, label: str) -> None:
         totp=totp,
         backup_codes=backup_codes
     )
-    bot_message: Message = await _base.bot.send_message(user_id, "\u200B")
+    bot_message: Message = await _base.bot.send_message(user_id, ".")
     # noinspection PyProtectedMember
     buttons: list[list[InlineKeyboardButton]] = [
         [

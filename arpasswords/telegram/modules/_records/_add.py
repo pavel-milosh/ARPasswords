@@ -26,7 +26,7 @@ class AddRecord(StatesGroup):
 
 @_base.router.message(Command("add_record"))
 @_decorators.messages_controller()
-async def _add_record(message: Message, state: FSMContext) -> None:
+async def _add_record(message: Message, state: FSMContext, **kwargs) -> None:
     await state.set_state(AddRecord.label_state)
     await state.update_data(
         bot_message=await message.answer(local("c_add_record", "initial")),
@@ -35,7 +35,7 @@ async def _add_record(message: Message, state: FSMContext) -> None:
 
 @_base.router.message(AddRecord.label_state)
 @_decorators.messages_controller()
-async def _add_record_label(message: Message, state: FSMContext) -> None:
+async def _add_record_label(message: Message, state: FSMContext, **kwargs) -> None:
     await state.set_state(AddRecord.password_state)
     await state.update_data(label=message.text)
     bot_message: Message = await state.get_value("bot_message")
@@ -44,13 +44,13 @@ async def _add_record_label(message: Message, state: FSMContext) -> None:
 
 @_base.router.message(AddRecord.password_state)
 @_decorators.messages_controller()
-async def _add_record_password(message: Message, state: FSMContext) -> None:
+async def _add_record_password(message: Message, state: FSMContext, **kwargs) -> None:
     await state.update_data(password=message.text)
     label: str = await state.get_value("label")
     password: str = await state.get_value("password")
     bot_message: Message = await state.get_value("bot_message")
     async with aiosqlite.connect(os.path.join("users", f"{message.from_user.id}.db")) as db:
-        await database.records.add(message.from_user.id, db, label, password)
+        await database.records.add(db, kwargs["key"], label, password)
         await db.commit()
     await bot_message.delete()
     await state.clear()

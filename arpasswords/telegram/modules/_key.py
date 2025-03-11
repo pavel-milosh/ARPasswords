@@ -18,13 +18,12 @@ class AddKey(StatesGroup):
 
 @_base.router.message(Command("key"))
 @_decorators.messages_controller(ignore_key=True)
-async def _key(message: Message, state: FSMContext) -> None:
-    key: str = keyring.get_password("keys", str(message.from_user.id))
-    if key is None:
+async def _key(message: Message, state: FSMContext, **kwargs) -> None:
+    if kwargs["key"] is None:
         hours: str = local("c_key", "none")
     else:
         hours: int = 24 - datetime.datetime.now().hour
-    bot_message: Message = await message.answer("\u200B")
+    bot_message: Message = await message.answer(".")
     keyboard: InlineKeyboardMarkup = InlineKeyboardMarkup(
         inline_keyboard=[
             [InlineKeyboardButton(
@@ -38,7 +37,7 @@ async def _key(message: Message, state: FSMContext) -> None:
     )
     await bot_message.edit_text(
         local("c_key", "initial").format(
-            key=key,
+            key=kwargs["key"],
             hours=hours
         ),
         reply_markup=keyboard
@@ -49,7 +48,7 @@ async def _key(message: Message, state: FSMContext) -> None:
 
 @_base.router.message(AddKey.active)
 @_decorators.messages_controller(ignore_key=True)
-async def _key_set(message: Message, state: FSMContext) -> None:
+async def _key_set(message: Message, state: FSMContext, **kwargs) -> None:
     key: str = message.text
     data: dict = await state.get_data()
     bot_message: Message = data["bot_message"]

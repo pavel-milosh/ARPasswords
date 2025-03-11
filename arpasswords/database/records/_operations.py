@@ -1,11 +1,9 @@
-import keyring
 from aiosqlite import Connection
 
 from ... import crypto
 
 
-async def add(user_id: int, db: Connection, label: str, password: str) -> None:
-    key: str = keyring.get_password("keys", str(user_id))
+async def add(db: Connection, key: str,  label: str, password: str) -> None:
     encrypted_password: str = crypto.encrypt(password, key)
 
     await db.execute(
