@@ -22,7 +22,7 @@ async def _find(message: Message, **kwargs) -> None:
         ]
 
     if len(labels) == 0:
-        await message.answer(local("records", "no_records_found").format(query=message.text))
+        await message.answer((await local("records", "not_found")).format(query=message.text))
     elif len(labels) == 1:
         await _info.record(message.from_user.id, labels[0])
     else:

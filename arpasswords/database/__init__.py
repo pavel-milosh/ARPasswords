@@ -24,7 +24,7 @@ async def create(user_id: int) -> None:
                 login TEXT,
                 email TEXT,
                 phone TEXT,
-                password TEXT NOT NULL,
+                password TEXT,
                 url TEXT,
                 totp TEXT,
                 backup_codes TEXT

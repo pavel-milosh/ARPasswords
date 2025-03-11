@@ -19,13 +19,7 @@ _dp: Dispatcher = Dispatcher()
 router: Router = Router()
 
 
-
-def message(
-        *args,
-        ignore_key: bool = False,
-        get_parameters: tuple[str, ...] = (),
-        **kwargs
-) -> Callable:
+def message(*args, ignore_key: bool = False, get_parameters: tuple[str, ...] = (), **kwargs) -> Callable:
     def decorator(func: Callable) -> Callable:
         @functools.wraps(func)
         @router.message(*args, **kwargs)
@@ -39,10 +33,7 @@ def message(
                 await database.create(message.from_user.id)
 
             if not ignore_key and key is None:
-                await message.reply(
-                    "Необходимо установить ключ шифрования! "
-                    "Воспользуйтесь командой /key"
-                )
+                await message.reply(await local("c_key", "install"))
             else:
                 await message.delete()
                 return await func(message, *args, **kwargs)
@@ -52,7 +43,7 @@ def message(
 
 async def start() -> None:
     # noinspection PyProtectedMember
-    commands: dict[str, str] = dict(local("commands")._catalog)
+    commands: dict[str, str] = dict((await local("commands"))._catalog)
     await bot.set_my_commands(
         [
             BotCommand(command=key, description=value)

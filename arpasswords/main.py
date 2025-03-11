@@ -1,5 +1,5 @@
-import os
 import asyncio
+import os
 
 from arpasswords import telegram, _schedule
 

@@ -6,10 +6,9 @@ from ..local import _ as local
 
 
 async def button(message_id: int) -> InlineKeyboardButton:
-    return InlineKeyboardButton(
-        text=local("common", "delete_message"),
-        callback_data=f"delete_message {message_id}"
-    )
+    text: str = await local("common", "delete_message")
+    callback_data: str = f"delete_message {message_id}"
+    return InlineKeyboardButton(text=text, callback_data=callback_data)
 
 
 @_base.router.callback_query(F.data.startswith("delete_message"))

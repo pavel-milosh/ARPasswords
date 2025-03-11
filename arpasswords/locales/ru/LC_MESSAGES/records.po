@@ -16,8 +16,11 @@ msgstr ""
 "\t\t\t\t\t\tКоды восстановления: <code>{backup_codes}</code>"
 "</b>"
 
-msgid "no_records_found"
+msgid "add"
+msgstr "Пожалуйста, введите метку для записи. <b>Она должна быть уникальной!</b>"
+
+msgid "not_found"
 msgstr "Записи не найдены"
 
-msgid "choose_record"
+msgid "choose"
 msgstr "Выберите нужную запись:"
