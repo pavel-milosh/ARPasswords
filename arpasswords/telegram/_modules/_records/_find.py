@@ -6,18 +6,18 @@ from aiogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.filters import Command
 
 from . import _info
-from ... import _base, _decorators
-from .... import database
-from ....local import _ as local
+from .. import _base, _decorators
+from ... import database
+from ...local import _ as local
 
 
-# @_base.router.message()
+# @_base.message()
 @_decorators.messages_controller()
 async def _find(message: Message, **kwargs) -> None:
     async with aiosqlite.connect(os.path.join("users", f"{message.from_user.id}.db")) as db:
         labels: list[str] = [
             label
-            for label in await database.records.labels()
+            for label in await database.labels()
             if message.text.lower() in label
         ]
 

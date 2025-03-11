@@ -5,14 +5,14 @@ import datetime
 import keyring
 
 
-def _delete_keys() -> None:
+async def _delete_keys() -> None:
     user_ids: list[str] = [
         user_id.replace(".db", "")
         for user_id in os.listdir("users")
     ]
 
     for user_id in user_ids:
-        keyring.delete_password("keys", user_id)
+        await asyncio.to_thread(keyring.delete_password, "keys", user_id)
 
 
 async def _midnight() -> None:
@@ -30,7 +30,7 @@ async def _midnight() -> None:
 
         seconds_until_midnight: float = (midnight - now).total_seconds()
         await asyncio.sleep(seconds_until_midnight)
-        _delete_keys()
+        await _delete_keys()
 
 
 async def setup() -> None:

@@ -5,20 +5,19 @@ from aiogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.filters import Command
 
 from . import _info
-from ... import _base, _decorators
+from ... import _base
 from .... import database
 from ....local import _ as local
 
 
-@_base.router.message(Command("show_records"))
-@_decorators.messages_controller()
-async def _command_show_records(message: Message, **kwargs) -> None:
+@_base.message(Command("show_records"))
+async def _command_show_records(message: Message) -> None:
     await records(message.from_user.id)
 
 
 async def records(user_id: int) -> None:
     async with aiosqlite.connect(os.path.join("users", f"{user_id}.db")) as db:
-        labels: list[str] = await database.records.labels(db)
+        labels: list[str] = await database.labels(db)
     if len(labels) == 0:
         await _base.bot.send_message(user_id, local("records", "no_records_found"))
     elif len(labels) == 1:
