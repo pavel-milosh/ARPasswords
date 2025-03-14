@@ -24,13 +24,12 @@ async def _key(message: Message, state: FSMContext, **kwargs) -> None:
         hours: str = await local("c_key", "empty")
     else:
         hours: str = f"около {24 - datetime.datetime.now().hour}"
-    bot_message: Message = await message.answer(".")
     button_text: str = (await local("common", "change_?")).format(parameter=await local("parameters", "key"))
     text: str = (await local("c_key", "initial")).format(key=kwargs["key"], hours=hours)
     keyboard: InlineKeyboardMarkup = InlineKeyboardMarkup(
         inline_keyboard=[[InlineKeyboardButton(text=button_text, callback_data="change_key")]]
     )
-    await bot_message.edit_text(text, reply_markup=keyboard)
+    bot_message: Message = await message.answer(text, reply_markup=keyboard)
     await state.update_data(bot_message=bot_message)
     await asyncio.sleep(120)
     await bot_message.delete()

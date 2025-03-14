@@ -17,7 +17,7 @@ from ..local import _ as local
 bot: Bot = Bot(config()["token"], default=DefaultBotProperties(parse_mode=ParseMode.HTML))
 _dp: Dispatcher = Dispatcher()
 router: Router = Router()
-find_router: Router = Router()
+alt_router: Router = Router()
 
 
 def message(*args, router: Router = router, ignore_key: bool = False, get_parameters: tuple[str, ...] = (), **kwargs) -> Callable:
@@ -54,5 +54,5 @@ async def start() -> None:
             for command in commands
         ]
     )
-    _dp.include_routers(router, find_router)
+    _dp.include_routers(router, alt_router)
     await _dp.start_polling(bot)

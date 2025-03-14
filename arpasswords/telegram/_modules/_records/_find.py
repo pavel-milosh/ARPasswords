@@ -8,7 +8,7 @@ from ... import _base
 from .... import database
 
 
-@_base.message(router=_base.find_router)
+@_base.message(router=_base.alt_router)
 async def _command(message: Message) -> None:
     async with aiosqlite.connect(os.path.join("users", f"{message.from_user.id}.db")) as db:
         labels: list[str] = [

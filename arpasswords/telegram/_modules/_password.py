@@ -33,8 +33,7 @@ async def _generate(length: int = 20) -> str:
 @_base.message(Command("generate_password"), ignore_key=True)
 async def _command(message: Message) -> None:
     password: str = html.escape(await _generate())
-    bot_message: Message = await message.answer(".")
     text: str = (await local("c_generate_password", "initial")).format(password=password)
-    await bot_message.edit_text(text)
+    await message.answer(text)
     await asyncio.sleep(120)
     await message.delete()

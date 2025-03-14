@@ -4,9 +4,10 @@ import aiosqlite
 from aiogram import F
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
-from aiogram.types import CallbackQuery, Message
+from aiogram.types import CallbackQuery, Message, InlineKeyboardMarkup
 
 from . import _info
+from .. import _cancel
 from ... import _base
 from .... import database
 from ....local import _ as local
@@ -19,15 +20,16 @@ class ChangeFields(StatesGroup):
     parameter: str
 
 
-@_base.find_router.callback_query(F.data.startswith("change_"))
+@_base.alt_router.callback_query(F.data.startswith("change_"))
 async def _change(callback: CallbackQuery, state: FSMContext) -> None:
     label: str = callback.data[callback.data.find(" ") + 1:]
     parameter: str = callback.data.split()[0].replace("change_", "")
     parameter_text: str = (await local("parameters", parameter)).capitalize()
     text: str = (await local("common", "enter_new_?")).format(parameter=parameter_text)
+    keyboard: InlineKeyboardMarkup = InlineKeyboardMarkup(inline_keyboard=[[await _cancel.cancel()]])
     await state.update_data(parameter=parameter, label=label)
     await callback.message.delete()
-    await state.update_data(bot_message=await callback.message.answer(text))
+    await state.update_data(bot_message=await callback.message.answer(text, reply_markup=keyboard))
     await callback.answer()
     await state.set_state(ChangeFields.active)
 

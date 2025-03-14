@@ -9,3 +9,9 @@ msgstr "Изменить {parameter}"
 
 msgid "enter_new_?"
 msgstr "Введите новое значение для параметра <b>{parameter}</b>"
+
+msgid "cancel"
+msgstr "Отменить"
+
+msgid "operation_interrupted"
+msgstr "<b>Операция прервана</b>"
