@@ -27,6 +27,3 @@ msgstr "URL"
 
 msgid "totp"
 msgstr "TOTP"
-
-msgid "backup_codes"
-msgstr "коды восстановления"

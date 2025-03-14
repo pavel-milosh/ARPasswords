@@ -4,9 +4,9 @@ import secrets
 import string
 
 from aiogram.filters import Command
-from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
+from aiogram.types import Message
 
-from .. import _base, _delete_message
+from .. import _base
 from ...local import _ as local
 
 
@@ -35,5 +35,6 @@ async def _command(message: Message) -> None:
     password: str = html.escape(await _generate())
     bot_message: Message = await message.answer(".")
     text: str = (await local("c_generate_password", "initial")).format(password=password)
-    button: InlineKeyboardButton = await _delete_message.button(bot_message.message_id)
-    await bot_message.edit_text(text, reply_markup=InlineKeyboardMarkup(inline_keyboard=[[button]]))
+    await bot_message.edit_text(text)
+    await asyncio.sleep(120)
+    await message.delete()

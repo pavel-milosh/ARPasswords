@@ -19,12 +19,13 @@ class ChangeFields(StatesGroup):
     parameter: str
 
 
-@_base.router.callback_query(F.data.startswith("change_"))
+@_base.find_router.callback_query(F.data.startswith("change_"))
 async def _change(callback: CallbackQuery, state: FSMContext) -> None:
+    label: str = callback.data[callback.data.find(" ") + 1:]
     parameter: str = callback.data.split()[0].replace("change_", "")
     parameter_text: str = (await local("parameters", parameter)).capitalize()
     text: str = (await local("common", "enter_new_?")).format(parameter=parameter_text)
-    await state.update_data(parameter=parameter, label=callback.data.split()[1])
+    await state.update_data(parameter=parameter, label=label)
     await callback.message.delete()
     await state.update_data(bot_message=await callback.message.answer(text))
     await callback.answer()

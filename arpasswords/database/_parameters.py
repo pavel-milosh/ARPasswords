@@ -17,7 +17,8 @@ async def _do(
         query: str = f"SELECT {parameter} FROM passwords WHERE label = ?"
         async with await db.execute(query, (label,)) as cursor:
             encrypted: str | None = (await cursor.fetchone())[0]
-        return await crypto.decrypt(encrypted, key)
+        if encrypted is not None:
+            return await crypto.decrypt(encrypted, key)
     else:
         query: str = f"UPDATE passwords SET {parameter} = ? WHERE label = ?"
         await db.execute(query, (await crypto.encrypt(value, key), label))
@@ -39,7 +40,7 @@ async def parameter(
         result: str | None = await _do(db, key, label, parameter, value)
         try:
             return json.loads(result)
-        except JSONDecodeError:
+        except (JSONDecodeError, TypeError):
             return result
     if isinstance(value, list):
         value = json.dumps(value, ensure_ascii=False)

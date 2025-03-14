@@ -1,36 +1,20 @@
 import os
 
-import keyring
 import aiosqlite
-from aiogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup
-from aiogram.filters import Command
+from aiogram.types import Message
 
-from . import _info
-from .. import _base, _decorators
-from ... import database
-from ...local import _ as local
+from . import _show
+from ... import _base
+from .... import database
 
 
-# @_base.message()
-@_decorators.messages_controller()
-async def _find(message: Message, **kwargs) -> None:
+@_base.message(router=_base.find_router)
+async def _command(message: Message) -> None:
     async with aiosqlite.connect(os.path.join("users", f"{message.from_user.id}.db")) as db:
         labels: list[str] = [
             label
-            for label in await database.labels()
-            if message.text.lower() in label
+            for label in await database.labels(db)
+            if message.text.lower() in label.lower()
         ]
 
-    if len(labels) == 0:
-        await message.answer((await local("records", "not_found")).format(query=message.text))
-    elif len(labels) == 1:
-        await _info.record(message.from_user.id, labels[0])
-    else:
-        buttons: list[list[InlineKeyboardButton]] = [
-            [InlineKeyboardButton(text=label, callback_data=f"record_info {label}")]
-            for label in labels
-        ]
-        await message.answer(
-            local("records", "several_records_found"),
-            reply_markup=InlineKeyboardMarkup(inline_keyboard=buttons)
-        )
+    await _show.records(message.from_user.id, labels)

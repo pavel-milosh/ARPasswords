@@ -47,7 +47,7 @@ def _s_decrypt(text: str, key: str) -> str:
 
 
 async def encrypt(text: str, key: str) -> str:
-    return await asyncio.to_thread(_s_encrypt, text, key)
+    return await asyncio.to_thread(_s_encrypt, str(text), key)
 
 async def decrypt(text: str, key: str) -> str:
-    return await asyncio.to_thread(_s_decrypt, text, key)
+    return await asyncio.to_thread(_s_decrypt, str(text), key)

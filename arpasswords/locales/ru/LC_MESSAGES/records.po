@@ -12,15 +12,22 @@ msgstr ""
 "\t\t\t\t\t\tНомер телефона: <code>{phone}</code>\n"
 "\t\t\t\t\t\tПароль: <code>{password}</code>\n"
 "\t\t\t\t\t\tURL: <code>{url}</code>\n"
-"\t\t\t\t\t\tTOTP: <code>{totp}</code>\n"
-"\t\t\t\t\t\tКоды восстановления: <code>{backup_codes}</code>"
-"</b>"
+"\t\t\t\t\t\tTOTP: <tg-spoiler>{totp}</tg-spoiler></b>\n\n"
+"<i>Сообщение удалится автоматически через 2 минуты</i>"
 
 msgid "add"
 msgstr "Пожалуйста, введите метку для записи. <b>Она должна быть уникальной!</b>"
 
+msgid "choose"
+msgstr "Выберите запись"
+
 msgid "not_found"
 msgstr "Записи не найдены"
 
-msgid "choose"
-msgstr "Выберите нужную запись:"
+msgid "get_otp"
+msgstr "Получить OTP-код (2fa)"
+
+msgid "otp"
+msgstr ""
+"Ваш одноразовый код <b>OTP</b>: <code>{OTP}</code>\n"
+"Он будет активен <b>30 секунд</b>. По истечению времени сообщение автоматически удалится"

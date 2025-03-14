@@ -15,9 +15,11 @@ async def _command_show_records(message: Message) -> None:
     await records(message.from_user.id)
 
 
-async def records(user_id: int) -> None:
-    async with aiosqlite.connect(os.path.join("users", f"{user_id}.db")) as db:
-        labels: list[str] = await database.labels(db)
+async def records(user_id: int, labels: list[str] | None = None) -> None:
+    if labels is None:
+        async with aiosqlite.connect(os.path.join("users", f"{user_id}.db")) as db:
+            labels: list[str] = await database.labels(db)
+
     if len(labels) == 0:
         await _base.bot.send_message(user_id, await local("records", "not_found"))
     elif len(labels) == 1:

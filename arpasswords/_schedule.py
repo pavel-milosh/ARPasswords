@@ -3,13 +3,17 @@ import os
 from datetime import datetime, time
 
 import keyring
+from keyring.errors import PasswordDeleteError
 
 
 async def _delete_keys() -> None:
     user_ids: list[str] = [user_id.replace(".db", "") for user_id in os.listdir("users")]
 
     for user_id in user_ids:
-        await asyncio.to_thread(keyring.delete_password, "keys", user_id)
+        try:
+            await asyncio.to_thread(keyring.delete_password, "keys", user_id)
+        except PasswordDeleteError:
+            pass
 
 
 async def _midnight() -> None:
@@ -25,4 +29,5 @@ async def _midnight() -> None:
 
 
 async def setup() -> None:
+    await _delete_keys()
     asyncio.create_task(_midnight())
