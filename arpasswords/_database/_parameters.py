@@ -3,7 +3,7 @@ from json import JSONDecodeError
 
 from aiosqlite import Connection
 
-from .. import crypto
+from .. import _crypto
 
 
 async def _do(
@@ -20,13 +20,13 @@ async def _do(
         if parameter == "label":
             return encrypted
         if encrypted is not None:
-            return await crypto.decrypt(encrypted, key)
+            return await _crypto.decrypt(encrypted, key)
     else:
         query: str = f"UPDATE passwords SET {parameter} = ? WHERE label = ?"
         if parameter == "label":
             await db.execute(query, (value, label))
         else:
-            await db.execute(query, (await crypto.encrypt(value, key), label))
+            await db.execute(query, (await _crypto.encrypt(value, key), label))
 
 
 async def labels(db: Connection) -> list[str]:

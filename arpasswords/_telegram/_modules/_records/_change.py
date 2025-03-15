@@ -10,9 +10,9 @@ from aiogram.types import CallbackQuery, InlineKeyboardButton, InlineKeyboardMar
 from . import _info
 from .. import _cancel
 from ... import _base
-from .... import database
-from ....config import _ as config
-from ....local import _ as local
+from .... import _database
+from ...._config import _ as _config
+from ...._local import _ as _local
 
 
 class ChangeFields(StatesGroup):
@@ -36,14 +36,14 @@ async def _change_parameter(callback: CallbackQuery) -> None:
     await callback.message.delete()
     label: str = callback.data[callback.data.find(" ") + 1:]
     buttons: list[list[InlineKeyboardButton]] = []
-    for key in config()["parameters"]:
+    for key in _config()["parameters"]:
         if key != "key":
-            value: str = await local("parameters", key)
-            button_text: str = (await local("change", "parameter?")).format(parameter=value)
+            value: str = await _local("parameters", key)
+            button_text: str = (await _local("change", "parameter?")).format(parameter=value)
             callback_data: str = f"change_{key} {label}"
             buttons.append([InlineKeyboardButton(text=button_text, callback_data=callback_data)])
     await callback.message.answer(
-        await local("change", "which_parameter"),
+        await _local("change", "which_parameter"),
         reply_markup=InlineKeyboardMarkup(inline_keyboard=buttons)
     )
 
@@ -54,8 +54,8 @@ async def _change(callback: CallbackQuery, state: FSMContext) -> None:
     await callback.message.delete()
     label: str = callback.data[callback.data.find(" ") + 1:]
     parameter: str = callback.data.split()[0].replace("change_", "")
-    parameter_text: str = (await local("parameters", parameter)).capitalize()
-    text: str = (await local("change", "new_value_for_parameter")).format(parameter=parameter_text)
+    parameter_text: str = (await _local("parameters", parameter)).capitalize()
+    text: str = (await _local("change", "new_value_for_parameter")).format(parameter=parameter_text)
     keyboard: InlineKeyboardMarkup = InlineKeyboardMarkup(inline_keyboard=[[await _cancel.button()]])
     await state.update_data(parameter=parameter, label=label)
     await state.update_data(bot_message=await callback.message.answer(text, reply_markup=keyboard))
@@ -71,7 +71,7 @@ async def _change_active(message: Message, state: FSMContext, **kwargs) -> None:
     if parameter == "phone":
         value = format_phone(value)
     async with aiosqlite.connect(os.path.join("users", f"{message.from_user.id}.db")) as db:
-        await database.parameter(db, kwargs["key"], label, parameter, value)
+        await _database.parameter(db, kwargs["key"], label, parameter, value)
         await db.commit()
     await state.clear()
     await bot_message.delete()
