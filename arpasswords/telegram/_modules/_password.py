@@ -3,6 +3,7 @@ import html
 import secrets
 import string
 
+from aiogram.exceptions import TelegramBadRequest
 from aiogram.filters import Command
 from aiogram.types import Message
 
@@ -33,7 +34,10 @@ async def _generate(length: int = 20) -> str:
 @_base.message(Command("generate_password"), ignore_key=True)
 async def _command(message: Message) -> None:
     password: str = html.escape(await _generate())
-    text: str = (await local("c_generate_password", "initial")).format(password=password)
+    text: str = (await local("generate_password", "initial")).format(password=password)
     await message.answer(text)
     await asyncio.sleep(120)
-    await message.delete()
+    try:
+        await message.delete()
+    except TelegramBadRequest:
+        pass

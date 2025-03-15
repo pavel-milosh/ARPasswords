@@ -16,8 +16,9 @@ from ....local import _ as local
 
 @_base.router.callback_query(F.data.startswith("record_info"))
 async def _callback_record_info(callback: CallbackQuery) -> None:
-    label: str = callback.data[callback.data.find(" ") + 1:]
+    await callback.answer()
     await callback.message.delete()
+    label: str = callback.data[callback.data.find(" ") + 1:]
     await record(callback.from_user.id, label)
 
 
@@ -31,14 +32,10 @@ async def record(user_id: int, label: str) -> None:
         parameters["label"] = label
     text: str = (await local("records", "info")).format(**parameters)
     buttons: list[list[InlineKeyboardButton]] = [
-        [InlineKeyboardButton(text=await local("records", "get_otp"), callback_data=f"otp {label}")]
+        [InlineKeyboardButton(text=await local("records", "get_otp"), callback_data=f"otp {label}")],
+        [InlineKeyboardButton(text=await local("change", "parameter"), callback_data=f"change_parameter {label}")],
+        [InlineKeyboardButton(text=await local("records", "delete"), callback_data=f"sure_delete_record {label}")]
     ]
-    for key in config()["parameters"]:
-        if key not in ("label", "key"):
-            value: str = await local("parameters", key)
-            button_text: str = (await local("common", "change_?")).format(parameter=value)
-            callback_data: str = f"change_{key} {label}"
-            buttons.append([InlineKeyboardButton(text=button_text, callback_data=callback_data)])
 
     bot_message: Message = await _base.bot.send_message(
         user_id,

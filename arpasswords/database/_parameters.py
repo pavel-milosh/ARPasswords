@@ -17,11 +17,16 @@ async def _do(
         query: str = f"SELECT {parameter} FROM passwords WHERE label = ?"
         async with await db.execute(query, (label,)) as cursor:
             encrypted: str | None = (await cursor.fetchone())[0]
+        if parameter == "label":
+            return encrypted
         if encrypted is not None:
             return await crypto.decrypt(encrypted, key)
     else:
         query: str = f"UPDATE passwords SET {parameter} = ? WHERE label = ?"
-        await db.execute(query, (await crypto.encrypt(value, key), label))
+        if parameter == "label":
+            await db.execute(query, (value, label))
+        else:
+            await db.execute(query, (await crypto.encrypt(value, key), label))
 
 
 async def labels(db: Connection) -> list[str]:

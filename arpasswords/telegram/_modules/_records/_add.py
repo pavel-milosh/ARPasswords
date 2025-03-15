@@ -1,6 +1,7 @@
 import os
 
 import aiosqlite
+from aiogram.exceptions import TelegramBadRequest
 from aiogram.filters import Command
 from aiogram.types import Message
 from aiogram.fsm.context import FSMContext
@@ -24,12 +25,14 @@ async def _add_record(message: Message, state: FSMContext) -> None:
 
 
 @_base.message(AddRecord.active)
-async def _add_record_label(message: Message, state: FSMContext) -> None:
+async def _add_record_active(message: Message, state: FSMContext) -> None:
+    bot_message: Message = await state.get_value("bot_message")
     async with aiosqlite.connect(os.path.join("users", f"{message.from_user.id}.db")) as db:
         await database.add(db, message.text)
         await db.commit()
-
-    bot_message: Message = await state.get_value("bot_message")
-    await bot_message.delete()
-    await _info.record(message.from_user.id, message.text)
     await state.clear()
+    try:
+        await bot_message.delete()
+    except TelegramBadRequest:
+        pass
+    await _info.record(message.from_user.id, message.text)

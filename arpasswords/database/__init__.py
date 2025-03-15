@@ -2,13 +2,14 @@ import os
 
 import aiosqlite
 
-from ._operations import add
+from ._operations import add, delete
 from ._parameters import parameter, labels
 
 
 __all__: list[str] = [
     # _operations.py
     "add",
+    "delete",
     # _parameters.py
     "labels",
     "parameter"

@@ -1,0 +1,17 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ru\n"
+
+msgid "parameter"
+msgstr "Изменить параметр"
+
+msgid "parameter?"
+msgstr "Изменить {parameter}"
+
+msgid "which_parameter"
+msgstr "Какой параметр изменить?"
+
+msgid "new_value_for_parameter"
+msgstr "Введите новое значение для параметра <code>{parameter}</code>"

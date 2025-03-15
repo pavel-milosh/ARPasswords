@@ -18,6 +18,15 @@ msgstr ""
 msgid "add"
 msgstr "Пожалуйста, введите метку для записи. <b>Она должна быть уникальной!</b>"
 
+msgid "delete"
+msgstr "Удалить запись"
+
+msgid "sure_delete"
+msgstr "Вы уверены, что хотите удалить запись <b>{label}</b>?"
+
+msgid "deleted"
+msgstr "Запись <b>{label}</b> удалена успешно"
+
 msgid "choose"
 msgstr "Выберите запись"
 
