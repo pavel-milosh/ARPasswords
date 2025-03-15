@@ -18,6 +18,9 @@ msgstr ""
 msgid "add"
 msgstr "Пожалуйста, введите метку для записи. <b>Она должна быть уникальной!</b>"
 
+msgid "choose"
+msgstr "Выберите запись"
+
 msgid "delete"
 msgstr "Удалить запись"
 
@@ -27,16 +30,5 @@ msgstr "Вы уверены, что хотите удалить запись <b>
 msgid "deleted"
 msgstr "Запись <b>{label}</b> удалена успешно"
 
-msgid "choose"
-msgstr "Выберите запись"
-
 msgid "not_found"
 msgstr "Записи не найдены"
-
-msgid "get_otp"
-msgstr "Получить OTP-код (2fa)"
-
-msgid "otp"
-msgstr ""
-"Ваш одноразовый код <b>OTP</b>: <code>{OTP}</code>\n"
-"Он будет активен <b>30 секунд</b>. По истечению времени сообщение автоматически удалится"

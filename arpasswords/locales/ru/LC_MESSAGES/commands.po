@@ -7,11 +7,21 @@ msgstr ""
 msgid "start"
 msgstr "Меню пользователя"
 
+msgid "start_message"
+msgstr ""
+"Привет, {name}! Я менеджер паролей <b>ARPasswords</b>\n"
+"Перед началом работы придумай <b>надежный</b> ключ шифрования (master пароль) и добавь его командой /key"
+
 msgid "key"
 msgstr "Настройка ключа шифрования"
 
-msgid "generate_password"
-msgstr "Генерация пароля"
+msgid "generate_passwords"
+msgstr "Генерация паролей"
+
+msgid "generate_passwords_message"
+msgstr ""
+"Ваши сгенерированные пароли:\n{passwords}\n\n"
+"<i>Сообщение удалится автоматически через 1 час</i>"
 
 msgid "add_record"
 msgstr "Добавить новую запись"

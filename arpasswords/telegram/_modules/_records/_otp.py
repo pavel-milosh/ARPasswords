@@ -29,7 +29,7 @@ async def _totp(callback: CallbackQuery) -> None:
     async with aiosqlite.connect(os.path.join("users", f"{callback.from_user.id}.db")) as db:
         totp: str = await database.parameter(db, key, label, "totp")
     otp: str = await _get_otp(totp)
-    text: str = (await local("records", "otp")).format(OTP=otp)
+    text: str = (await local("otp", "initial")).format(OTP=otp)
     message: Message = await callback.message.answer(text)
     await asyncio.sleep(30)
     await message.delete()

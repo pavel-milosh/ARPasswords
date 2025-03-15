@@ -10,8 +10,8 @@ msgstr "да"
 msgid "cancel"
 msgstr "Отменить"
 
-msgid "enter_new_?"
-msgstr "Введите новое значение для параметра <b>{parameter}</b>"
-
 msgid "operation_interrupted"
 msgstr "<b>Операция прервана</b>"
+
+msgid "incorrect_value"
+msgstr "<b>Недопустимое значение.</b> Попробуйте еще раз"

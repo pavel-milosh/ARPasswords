@@ -1,0 +1,13 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ru\n"
+
+msgid "initial"
+msgstr ""
+"Ваш одноразовый код <b>OTP</b>: <code>{OTP}</code>\n"
+"Он будет активен <b>30 секунд</b>. По истечению этого времени сообщение удалится автоматически"
+
+msgid "get"
+msgstr "Получить OTP-код (2fa)"

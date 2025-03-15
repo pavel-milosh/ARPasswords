@@ -35,7 +35,7 @@ def message(*args, router: Router = router, ignore_key: bool = False, get_parame
                 await database.create(message.from_user.id)
 
             if not ignore_key and key is None:
-                await message.reply(await local("key", "install"))
+                await message.reply(await local("key", "need_install"))
                 return
 
             await message.delete()

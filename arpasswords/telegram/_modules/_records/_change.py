@@ -1,4 +1,5 @@
 import os
+import re
 
 import aiosqlite
 from aiogram import F
@@ -19,6 +20,14 @@ class ChangeFields(StatesGroup):
     bot_message: Message
     label: str
     parameter: str
+
+
+def format_phone(phone: str) -> str:
+    digits: str = re.sub(r"\D", "", phone)
+    if len(digits) == 11:
+        return f"+7 ({digits[1:4]}) {digits[4:7]}-{digits[7:9]}-{digits[9:]}"
+    elif len(digits) == 10:
+        return f"+7 ({digits[0:3]}) {digits[3:6]}-{digits[6:8]}-{digits[8:]}"
 
 
 @_base.router.callback_query(F.data.startswith("change_parameter"))
@@ -58,12 +67,15 @@ async def _change_active(message: Message, state: FSMContext, **kwargs) -> None:
     parameter: str = await state.get_value("parameter")
     label: str = await state.get_value("label")
     bot_message: Message = await state.get_value("bot_message")
+    value: str = message.text
+    if parameter == "phone":
+        value = format_phone(value)
     async with aiosqlite.connect(os.path.join("users", f"{message.from_user.id}.db")) as db:
-        await database.parameter(db, kwargs["key"], label, parameter, message.text)
+        await database.parameter(db, kwargs["key"], label, parameter, value)
         await db.commit()
     await state.clear()
     await bot_message.delete()
     if parameter == "label":
-        await _info.record(message.from_user.id, message.text)
+        await _info.record(message.from_user.id, value)
     else:
         await _info.record(message.from_user.id, label)

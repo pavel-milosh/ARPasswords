@@ -56,7 +56,7 @@ async def _key_set(message: Message, state: FSMContext) -> None:
     bot_message: Message = data["bot_message"]
     if len(message.text) < 8:
         try:
-            await bot_message.edit_text(await local("key", "incorrect"))
+            await bot_message.edit_text(await local("common", "incorrect_value"))
         except TelegramBadRequest:
             pass
         finally:
