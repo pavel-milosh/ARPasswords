@@ -7,8 +7,8 @@ from aiogram.exceptions import TelegramBadRequest
 from aiogram.filters import Command
 from aiogram.types import Message
 
-from .. import _base
-from ..._local import _ as _local
+from .. import base
+from ...local import _ as local
 
 
 def _s_generate(length: int = 20) -> str:
@@ -31,10 +31,10 @@ async def _generate(length: int = 20) -> str:
     return await asyncio.to_thread(_s_generate, length=length)
 
 
-@_base.message(Command("generate_passwords"), ignore_key=True)
+@base.message(Command("generate_passwords"), ignore_key=True)
 async def _command(message: Message) -> None:
     passwords: list[str] = [f"\t\t• <code>{html.escape(await _generate())}</code>" for _ in range(10)]
-    text: str = (await _local("commands", "generate_password_message")).format(passwords="\n".join(passwords))
+    text: str = (await local("commands", "generate_password_message")).format(passwords="\n".join(passwords))
     await message.answer(text)
     await asyncio.sleep(60**2)
     try:

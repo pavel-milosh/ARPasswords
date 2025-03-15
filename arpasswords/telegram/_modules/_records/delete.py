@@ -4,29 +4,29 @@ import aiosqlite
 from aiogram import F
 from aiogram.types import CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup
 
-from ... import _base
-from .... import _database
-from ...._local import _ as _local
+from ... import base
+from .... import database
+from ....local import _ as local
 
 
-@_base.router.callback_query(F.data.startswith("sure_delete_record"))
+@base.router.callback_query(F.data.startswith("sure_delete_record"))
 async def _sure_delete_record(callback: CallbackQuery) -> None:
     await callback.answer()
     await callback.message.delete()
     label: str = callback.data[callback.data.find(" ") + 1:]
-    text: str = (await _local("records", "sure_delete")).format(label=label)
+    text: str = (await local("records", "sure_delete")).format(label=label)
     button: InlineKeyboardButton = InlineKeyboardButton(
-        text=(await _local("common", "yes")).capitalize(),
+        text=(await local("common", "yes")).capitalize(),
         callback_data=f"delete_record {label}"
     )
     await callback.message.answer(text, reply_markup=InlineKeyboardMarkup(inline_keyboard=[[button]]))
 
 
-@_base.router.callback_query(F.data.startswith("delete_record"))
+@base.router.callback_query(F.data.startswith("delete_record"))
 async def _delete_record(callback: CallbackQuery) -> None:
     await callback.answer()
     label: str = callback.data[callback.data.find(" ") + 1:]
     async with aiosqlite.connect(os.path.join("users", f"{callback.from_user.id}.db")) as db:
-        await _database.delete(db, label)
+        await database.delete(db, label)
         await db.commit()
-    await callback.message.edit_text((await _local("records", "deleted")).format(label=label))
+    await callback.message.edit_text((await local("records", "deleted")).format(label=label))

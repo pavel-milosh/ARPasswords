@@ -9,12 +9,12 @@ from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from aiogram.types import BotCommand, Message
 
-from .. import _database
-from .._config import _ as _config
-from .._local import _ as _local
+from .. import database
+from ..config import _ as config
+from ..local import _ as local
 
 
-bot: Bot = Bot(_config()["token"], default=DefaultBotProperties(parse_mode=ParseMode.HTML))
+bot: Bot = Bot(config()["token"], default=DefaultBotProperties(parse_mode=ParseMode.HTML))
 _dp: Dispatcher = Dispatcher()
 router: Router = Router()
 alt_router: Router = Router()
@@ -32,10 +32,10 @@ def message(*args, router: Router = router, ignore_key: bool = False, get_parame
                 c_kwargs["key"] = key
 
             if not os.path.exists(os.path.join("users", f"{message.from_user.id}.db")):
-                await _database.create(message.from_user.id)
+                await database.create(message.from_user.id)
 
             if not ignore_key and key is None:
-                await message.reply(await _local("key", "need_install"))
+                await message.reply(await local("key", "need_install"))
                 return
 
             await message.delete()
@@ -47,10 +47,10 @@ def message(*args, router: Router = router, ignore_key: bool = False, get_parame
     return decorator
 
 async def start() -> None:
-    commands: list[str] = _config()["commands"]
+    commands: list[str] = config()["commands"]
     await bot.set_my_commands(
         [
-            BotCommand(command=command, description=await _local("commands", command))
+            BotCommand(command=command, description=await local("commands", command))
             for command in commands
         ]
     )
