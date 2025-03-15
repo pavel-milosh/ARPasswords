@@ -19,6 +19,12 @@ msgstr ""
 msgid "need_install"
 msgstr "Вам необходимо установить ключ шифрования. Воспользуйтесь командой /key"
 
+msgid "button"
+msgstr "Ввести ключ"
+
+msgid "enter"
+msgstr "Введите ключ шифрования"
+
 msgid "empty"
 msgstr "Ключ отсутствует"
 

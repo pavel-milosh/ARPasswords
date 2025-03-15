@@ -11,7 +11,7 @@ from .. import base
 from ...local import _ as local
 
 
-def _s_generate(length: int = 20) -> str:
+def _generate(length: int = 20) -> str:
     while True:
         password: str = ""
         for _ in range(length):
@@ -27,13 +27,13 @@ def _s_generate(length: int = 20) -> str:
             return password
 
 
-async def _generate(length: int = 20) -> str:
-    return await asyncio.to_thread(_s_generate, length=length)
+async def generate(length: int = 20) -> str:
+    return await asyncio.to_thread(_generate, length=length)
 
 
 @base.message(Command("generate_passwords"), ignore_key=True)
 async def _command(message: Message) -> None:
-    passwords: list[str] = [f"\t\t• <code>{html.escape(await _generate())}</code>" for _ in range(10)]
+    passwords: list[str] = [f"\t\t• <code>{html.escape(await generate())}</code>" for _ in range(10)]
     text: str = (await local("commands", "generate_password_message")).format(passwords="\n".join(passwords))
     await message.answer(text)
     await asyncio.sleep(60**2)

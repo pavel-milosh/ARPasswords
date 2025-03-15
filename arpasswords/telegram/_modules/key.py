@@ -14,7 +14,7 @@ from .. import base
 from ...local import _ as local
 
 
-class AddKey(StatesGroup):
+class EnterKey(StatesGroup):
     active: State = State()
     bot_message: Message
 
@@ -23,14 +23,13 @@ class AddKey(StatesGroup):
 async def _key(message: Message, state: FSMContext, **kwargs) -> None:
     if kwargs["key"] is None:
         hours: str = await local("key", "empty")
+        button: InlineKeyboardButton = InlineKeyboardButton(text=await local("key", "button"), callback_data="enter_key")
+        keyboard: InlineKeyboardMarkup = InlineKeyboardMarkup(inline_keyboard=[[button]])
     else:
         hours: str = f"около {24 - datetime.datetime.now().hour}"
-    button_text: str = (await local("change", "parameter?")).format(parameter=await local("parameters", "key"))
+        keyboard: None = None
     text: str = (await local("key", "initial")).format(key=kwargs["key"], hours=hours)
-    keyboard: InlineKeyboardMarkup = InlineKeyboardMarkup(
-        inline_keyboard=[[InlineKeyboardButton(text=button_text, callback_data="change_key")]]
-    )
-    bot_message: Message = await message.answer(text, reply_markup=keyboard)
+    bot_message = await message.answer(text, reply_markup=keyboard)
     await state.update_data(bot_message=bot_message)
     await asyncio.sleep(120)
     try:
@@ -39,24 +38,28 @@ async def _key(message: Message, state: FSMContext, **kwargs) -> None:
         pass
 
 
-@base.router.callback_query(F.data == "change_key")
-async def _change_key(callback: CallbackQuery, state: FSMContext) -> None:
+@base.router.callback_query(F.data == "enter_key")
+async def _enter_key(callback: CallbackQuery, state: FSMContext) -> None:
     await callback.answer()
     await callback.message.delete()
-    parameter: str = (await local("parameters", "key")).capitalize()
-    text: str = (await local("change", "new_value_for_parameter")).format(parameter=parameter)
-    message: Message = await callback.message.answer(text, reply_markup=InlineKeyboardMarkup(inline_keyboard=[[await cancel.button()]]))
+    message: Message = await callback.message.answer(
+        await local("key", "enter"),
+        reply_markup=InlineKeyboardMarkup(inline_keyboard=[[await cancel.button()]])
+    )
     await state.update_data(bot_message=message)
-    await state.set_state(AddKey.active)
+    await state.set_state(EnterKey.active)
 
 
-@base.message(AddKey.active, ignore_key=True)
-async def _key_set(message: Message, state: FSMContext) -> None:
+@base.message(EnterKey.active, ignore_key=True)
+async def _enter_key_active(message: Message, state: FSMContext) -> None:
     data: dict = await state.get_data()
     bot_message: Message = data["bot_message"]
     if len(message.text) < 8:
         try:
-            await bot_message.edit_text(await local("common", "incorrect_value"))
+            await bot_message.edit_text(
+                await local("common", "incorrect_value"),
+                reply_markup=InlineKeyboardMarkup(inline_keyboard=[[await cancel.button()]])
+            )
         except TelegramBadRequest:
             pass
         finally:

@@ -8,7 +8,7 @@ from aiogram.fsm.state import State, StatesGroup
 from aiogram.types import CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup, Message
 
 from . import info
-from .. import cancel
+from .. import cancel, password
 from ... import base
 from .... import database
 from ....config import _ as config
@@ -56,6 +56,8 @@ async def _change(callback: CallbackQuery, state: FSMContext) -> None:
     parameter: str = callback.data.split()[0].replace("change_", "")
     parameter_text: str = (await local("parameters", parameter)).capitalize()
     text: str = (await local("change", "new_value_for_parameter")).format(parameter=parameter_text)
+    if parameter == "password":
+        text += "\n" + (await local("change", "suggest_password")).format(password=await password.generate())
     keyboard: InlineKeyboardMarkup = InlineKeyboardMarkup(inline_keyboard=[[await cancel.button()]])
     await state.update_data(parameter=parameter, label=label)
     await state.update_data(bot_message=await callback.message.answer(text, reply_markup=keyboard))
@@ -68,7 +70,7 @@ async def _change_active(message: Message, state: FSMContext, **kwargs) -> None:
     label: str = await state.get_value("label")
     bot_message: Message = await state.get_value("bot_message")
     value: str = message.text
-    if parameter == "phone":
+    if value.lower() != "none" and parameter == "phone":
         value = format_phone(value)
     async with aiosqlite.connect(os.path.join("users", f"{message.from_user.id}.db")) as db:
         await database.parameter(db, kwargs["key"], label, parameter, value)
