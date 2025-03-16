@@ -2,4 +2,5 @@ aiogram
 aiosqlite
 pyotp
 keyring
+keyrings.alt
 cryptography
