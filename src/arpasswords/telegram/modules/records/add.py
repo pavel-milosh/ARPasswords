@@ -3,11 +3,12 @@ import os
 import aiosqlite
 from aiogram.exceptions import TelegramBadRequest
 from aiogram.filters import Command
-from aiogram.types import Message
+from aiogram.types import InlineKeyboardMarkup, Message
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 
 from . import info
+from .. import cancel
 from ... import base
 from .... import database
 from ....lang import _ as lang
@@ -20,7 +21,11 @@ class AddRecord(StatesGroup):
 
 @base.message(Command("add_record"))
 async def _add_record(message: Message, state: FSMContext) -> None:
-    await state.update_data(bot_message=await message.answer(await lang("records", "add")))
+    bot_message: Message = await message.answer(
+        await lang("records", "add"),
+        reply_markup=InlineKeyboardMarkup(inline_keyboard=[[await cancel.button()]])
+    )
+    await state.update_data(bot_message=bot_message)
     await state.set_state(AddRecord.active)
 
 
