@@ -64,8 +64,8 @@ async def _change(callback: CallbackQuery, state: FSMContext) -> None:
     await state.set_state(ChangeFields.active)
 
 
-@base.message(ChangeFields.active, get_parameters=("key",))
-async def _change_active(message: Message, state: FSMContext, **kwargs) -> None:
+@base.message(ChangeFields.active)
+async def _change_active(message: Message, state: FSMContext) -> None:
     parameter: str = await state.get_value("parameter")
     label: str = await state.get_value("label")
     bot_message: Message = await state.get_value("bot_message")
@@ -73,7 +73,7 @@ async def _change_active(message: Message, state: FSMContext, **kwargs) -> None:
     if value.lower() != "none" and parameter == "phone":
         value = format_phone(value)
     async with aiosqlite.connect(os.path.join("users", f"{message.from_user.id}.db")) as db:
-        await database.parameter(db, kwargs["key"], label, parameter, value)
+        await database.parameter(db, message.from_user.id, label, parameter, value)
         await db.commit()
     await state.clear()
     await bot_message.delete()

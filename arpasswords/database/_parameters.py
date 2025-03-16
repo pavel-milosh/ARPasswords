@@ -8,7 +8,7 @@ from .. import crypto
 
 async def _do(
         db: Connection,
-        key: str,
+        user_id: int,
         label: str,
         parameter: str,
         value: str | None = None
@@ -20,15 +20,14 @@ async def _do(
         if parameter == "label":
             return encrypted
         if encrypted is not None:
-            return await crypto.decrypt(encrypted, key)
+            return await crypto.decrypt(encrypted, user_id)
     else:
         query: str = f"UPDATE passwords SET {parameter} = ? WHERE label = ?"
         if value.lower() == "none":
             value = None
-        if parameter == "label":
-            await db.execute(query, (value, label))
-        else:
-            await db.execute(query, (await crypto.encrypt(value, key), label))
+        elif parameter != "label":
+            value = await crypto.encrypt(value, user_id)
+        await db.execute(query, (value, label))
 
 
 async def labels(db: Connection) -> list[str]:
@@ -38,17 +37,17 @@ async def labels(db: Connection) -> list[str]:
 
 async def parameter(
         db: Connection,
-        key: str,
+        user_id: int,
         label: str,
         parameter: str,
         value: str | None = None
 ) -> str | None:
     if value is None:
-        result: str | None = await _do(db, key, label, parameter, value)
+        result: str | None = await _do(db, user_id, label, parameter, value)
         try:
             return json.loads(result)
         except (JSONDecodeError, TypeError):
             return result
     if isinstance(value, list):
         value = json.dumps(value, ensure_ascii=False)
-    await _do(db, key, label, parameter, value)
+    await _do(db, user_id, label, parameter, value)

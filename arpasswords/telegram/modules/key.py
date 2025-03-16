@@ -19,17 +19,18 @@ class EnterKey(StatesGroup):
     bot_message: Message
 
 
-@base.message(Command("key"), ignore_key=True, get_parameters=("key",))
-async def _key(message: Message, state: FSMContext, **kwargs) -> None:
-    if kwargs["key"] is None:
+@base.message(Command("key"), ignore_key=True)
+async def _key(message: Message, state: FSMContext) -> None:
+    key: str | None = await asyncio.to_thread(keyring.get_password, "keys", str(message.from_user.id))
+    if key is None:
         hours: str = await local("key", "empty")
-        button: InlineKeyboardButton = InlineKeyboardButton(text=await local("key", "button"), callback_data="enter_key")
-        keyboard: InlineKeyboardMarkup = InlineKeyboardMarkup(inline_keyboard=[[button]])
     else:
         hours: str = f"около {24 - datetime.datetime.now().hour}"
-        keyboard: None = None
-    text: str = (await local("key", "initial")).format(key=kwargs["key"], hours=hours)
-    bot_message = await message.answer(text, reply_markup=keyboard)
+    buttons: list[list[InlineKeyboardButton]] = [
+        [InlineKeyboardButton(text=await local("key", "button"), callback_data="enter_key")]
+    ]
+    text: str = (await local("key", "initial")).format(key=key, hours=hours)
+    bot_message = await message.answer(text, reply_markup=InlineKeyboardMarkup(inline_keyboard=buttons))
     await state.update_data(bot_message=bot_message)
     await asyncio.sleep(120)
     try:
