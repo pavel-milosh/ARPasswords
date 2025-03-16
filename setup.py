@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="ARPasswords",
-    version="0.0.1",         # Версия
+    version="0.0.2",         # Версия
     author="Pavel Milosh",
     author_email="global@pavelmilosh.com",
     description="Multilanguage password manager with encryption for telegram",

@@ -10,7 +10,6 @@ TRANSLATIONS: dict[str, Any] = {}
 
 def _get_translation(file: str) -> Any:
     folder: str = os.path.join(os.path.dirname(os.path.abspath(__file__)), "locales")
-    print(folder)
     if file not in TRANSLATIONS:
         TRANSLATIONS[file] = gettext.translation(file, folder, languages=[LANG], fallback=True)
     return TRANSLATIONS[file]
