@@ -1,1 +1,1 @@
-recursive-include src/arpasswords/locales
+graft arpasswords/locales
