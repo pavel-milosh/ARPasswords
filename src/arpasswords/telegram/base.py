@@ -11,7 +11,7 @@ from aiogram.types import BotCommand, Message
 
 from .. import database
 from ..config import _ as config
-from ..local import _ as local
+from ..locale import _ as locale
 
 
 bot: Bot = Bot(config()["token"], default=DefaultBotProperties(parse_mode=ParseMode.HTML))
@@ -31,7 +31,7 @@ def message(*args, router: Router = router, ignore_key: bool = False, **kwargs) 
                 await database.create(message.from_user.id)
 
             if not ignore_key and key is None:
-                await message.reply(await local("key", "need_install"))
+                await message.reply(await locale("key", "need_install"))
                 return
 
             await message.delete()
@@ -46,7 +46,7 @@ async def start() -> None:
     commands: list[str] = config()["commands"]
     await bot.set_my_commands(
         [
-            BotCommand(command=command, description=await local("commands", command))
+            BotCommand(command=command, description=await locale("commands", command))
             for command in commands
         ]
     )

@@ -161,4 +161,6 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 /arpasswords/users/
-/arpasswords/config.json
+/arpasswords/config.json!/venv/
+/src/ARPasswords.egg-info/
+/src/arpasswords/config.json

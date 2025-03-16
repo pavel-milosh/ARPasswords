@@ -10,7 +10,7 @@ from aiogram.fsm.state import State, StatesGroup
 from . import info
 from ... import base
 from .... import database
-from ....local import _ as local
+from ....locale import _ as locale
 
 
 class AddRecord(StatesGroup):
@@ -20,7 +20,7 @@ class AddRecord(StatesGroup):
 
 @base.message(Command("add_record"))
 async def _add_record(message: Message, state: FSMContext) -> None:
-    await state.update_data(bot_message=await message.answer(await local("records", "add")))
+    await state.update_data(bot_message=await message.answer(await locale("records", "add")))
     await state.set_state(AddRecord.active)
 
 

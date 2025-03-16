@@ -1,8 +1,5 @@
-import asyncio
-from asyncio import AbstractEventLoop
-
 from . import telegram
-from .local import _ as local
+from .locale import _ as locale
 
 
 class ARPasswordsException(Exception):
@@ -19,4 +16,4 @@ class DecryptionException(ARPasswordsException):
 
 
     async def message(self) -> None:
-        await telegram.base.bot.send_message(self.user_id, await local("exceptions", "decrypt"))
+        await telegram.base.bot.send_message(self.user_id, await locale("exceptions", "decrypt"))
