@@ -10,6 +10,7 @@ setup(
     url="https://github.com/pavel-milosh/ARPassword",
     packages=find_packages(where="src"),
     package_dir={"": "src"},
+    include_package_data=True,
     package_data={
         "arpasswords": ["locales/*"],
     },
