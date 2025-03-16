@@ -1,5 +1,3 @@
-import os
-
 from setuptools import setup, find_packages
 
 
@@ -9,8 +7,6 @@ setup(
     author="Pavel Milosh",
     author_email="global@pavelmilosh.com",
     description="Multilanguage password manager with encryption for telegram",
-    long_description=open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "README.md"), "r", encoding="utf-8").read(),
-    long_description_content_type="text/markdown",
     url="https://github.com/pavel-milosh/ARPassword",
     packages=find_packages(where="src"),
     package_dir={"": "src"},
