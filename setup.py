@@ -10,6 +10,9 @@ setup(
     url="https://github.com/pavel-milosh/ARPassword",
     packages=find_packages(where="src"),
     package_dir={"": "src"},
+    package_data={
+        "arpasswords": ["locales/*"],
+    },
     install_requires=[
         "aiogram",
         "aiosqlite",
