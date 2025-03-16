@@ -8,7 +8,7 @@ from pyotp import TOTP
 
 from ... import base
 from .... import database
-from ....locale import _ as locale
+from ....lang import _ as lang
 
 
 def _c_get_otp(totp: str) -> str:
@@ -27,7 +27,7 @@ async def _totp(callback: CallbackQuery) -> None:
     async with aiosqlite.connect(os.path.join("users", f"{callback.from_user.id}.db")) as db:
         totp: str = await database.parameter(db, callback.from_user.id, label, "totp")
     otp: str = await _get_otp(totp)
-    text: str = (await locale("otp", "initial")).format(OTP=otp)
+    text: str = (await lang("otp", "initial")).format(OTP=otp)
     message: Message = await callback.message.answer(text)
     await asyncio.sleep(30)
     await message.delete()

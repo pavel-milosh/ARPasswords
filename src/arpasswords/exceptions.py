@@ -1,5 +1,5 @@
 from . import telegram
-from .locale import _ as locale
+from .lang import _ as lang
 
 
 class ARPasswordsException(Exception):
@@ -16,4 +16,4 @@ class DecryptionException(ARPasswordsException):
 
 
     async def message(self) -> None:
-        await telegram.base.bot.send_message(self.user_id, await locale("exceptions", "decrypt"))
+        await telegram.base.bot.send_message(self.user_id, await lang("exceptions", "decrypt"))

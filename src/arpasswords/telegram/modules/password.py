@@ -8,7 +8,7 @@ from aiogram.filters import Command
 from aiogram.types import Message
 
 from .. import base
-from ...locale import _ as locale
+from ...lang import _ as lang
 
 
 def _generate(length: int = 20) -> str:
@@ -34,7 +34,7 @@ async def generate(length: int = 20) -> str:
 @base.message(Command("generate_passwords"), ignore_key=True)
 async def _command(message: Message) -> None:
     passwords: list[str] = [f"\t\t• <code>{html.escape(await generate())}</code>" for _ in range(10)]
-    text: str = (await locale("commands", "generate_password_message")).format(passwords="\n".join(passwords))
+    text: str = (await lang("commands", "generate_password_message")).format(passwords="\n".join(passwords))
     await message.answer(text)
     await asyncio.sleep(60**2)
     try:

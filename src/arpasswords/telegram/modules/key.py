@@ -11,7 +11,7 @@ from aiogram.types import CallbackQuery, InlineKeyboardButton, InlineKeyboardMar
 
 from . import cancel
 from .. import base
-from ...locale import _ as locale
+from ...lang import _ as lang
 
 
 class EnterKey(StatesGroup):
@@ -23,13 +23,13 @@ class EnterKey(StatesGroup):
 async def _key(message: Message, state: FSMContext) -> None:
     key: str | None = await asyncio.to_thread(keyring.get_password, "keys", str(message.from_user.id))
     if key is None:
-        hours: str = await locale("key", "empty")
+        hours: str = await lang("key", "empty")
     else:
         hours: str = f"около {24 - datetime.datetime.now().hour}"
     buttons: list[list[InlineKeyboardButton]] = [
-        [InlineKeyboardButton(text=await locale("key", "button"), callback_data="enter_key")]
+        [InlineKeyboardButton(text=await lang("key", "button"), callback_data="enter_key")]
     ]
-    text: str = (await locale("key", "initial")).format(key=key, hours=hours)
+    text: str = (await lang("key", "initial")).format(key=key, hours=hours)
     bot_message = await message.answer(text, reply_markup=InlineKeyboardMarkup(inline_keyboard=buttons))
     await state.update_data(bot_message=bot_message)
     await asyncio.sleep(120)
@@ -44,7 +44,7 @@ async def _enter_key(callback: CallbackQuery, state: FSMContext) -> None:
     await callback.answer()
     await callback.message.delete()
     message: Message = await callback.message.answer(
-        await locale("key", "enter"),
+        await lang("key", "enter"),
         reply_markup=InlineKeyboardMarkup(inline_keyboard=[[await cancel.button()]])
     )
     await state.update_data(bot_message=message)
@@ -58,7 +58,7 @@ async def _enter_key_active(message: Message, state: FSMContext) -> None:
     if len(message.text) < 8:
         try:
             await bot_message.edit_text(
-                await locale("common", "incorrect_value"),
+                await lang("common", "incorrect_value"),
                 reply_markup=InlineKeyboardMarkup(inline_keyboard=[[await cancel.button()]])
             )
         except TelegramBadRequest:
@@ -67,6 +67,6 @@ async def _enter_key_active(message: Message, state: FSMContext) -> None:
             return
     await state.clear()
     await asyncio.to_thread(keyring.set_password, "keys", str(message.from_user.id), message.text)
-    await bot_message.edit_text((await locale("key", "installed")).format(key=message.text))
+    await bot_message.edit_text((await lang("key", "installed")).format(key=message.text))
     await asyncio.sleep(10)
     await bot_message.delete()

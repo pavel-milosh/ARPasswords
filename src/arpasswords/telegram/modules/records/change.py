@@ -12,7 +12,7 @@ from .. import cancel, password
 from ... import base
 from .... import database
 from ....config import _ as config
-from ....locale import _ as locale
+from ....lang import _ as lang
 
 
 class ChangeFields(StatesGroup):
@@ -38,12 +38,12 @@ async def _change_parameter(callback: CallbackQuery) -> None:
     buttons: list[list[InlineKeyboardButton]] = []
     for key in config()["parameters"]:
         if key != "key":
-            value: str = await locale("parameters", key)
-            button_text: str = (await locale("change", "parameter?")).format(parameter=value)
+            value: str = await lang("parameters", key)
+            button_text: str = (await lang("change", "parameter?")).format(parameter=value)
             callback_data: str = f"change_{key} {label}"
             buttons.append([InlineKeyboardButton(text=button_text, callback_data=callback_data)])
     await callback.message.answer(
-        await locale("change", "which_parameter"),
+        await lang("change", "which_parameter"),
         reply_markup=InlineKeyboardMarkup(inline_keyboard=buttons)
     )
 
@@ -54,10 +54,10 @@ async def _change(callback: CallbackQuery, state: FSMContext) -> None:
     await callback.message.delete()
     label: str = callback.data[callback.data.find(" ") + 1:]
     parameter: str = callback.data.split()[0].replace("change_", "")
-    parameter_text: str = (await locale("parameters", parameter)).capitalize()
-    text: str = (await locale("change", "new_value_for_parameter")).format(parameter=parameter_text)
+    parameter_text: str = (await lang("parameters", parameter)).capitalize()
+    text: str = (await lang("change", "new_value_for_parameter")).format(parameter=parameter_text)
     if parameter == "password":
-        text += "\n" + (await locale("change", "suggest_password")).format(password=await password.generate())
+        text += "\n" + (await lang("change", "suggest_password")).format(password=await password.generate())
     keyboard: InlineKeyboardMarkup = InlineKeyboardMarkup(inline_keyboard=[[await cancel.button()]])
     await state.update_data(parameter=parameter, label=label)
     await state.update_data(bot_message=await callback.message.answer(text, reply_markup=keyboard))
