@@ -7,10 +7,10 @@ from aiogram import F
 from aiogram.exceptions import TelegramBadRequest
 from aiogram.types import  CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup, Message
 
-from ... import base
-from .... import database
-from ....config import _ as config
-from ....lang import _ as lang
+from .. import base
+from ... import database
+from ...config import _ as config
+from ...lang import _ as lang
 
 
 @base.router.callback_query(F.data.startswith("record_info"))

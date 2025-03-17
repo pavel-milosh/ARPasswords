@@ -4,9 +4,9 @@ import aiosqlite
 from aiogram import F
 from aiogram.types import CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup
 
-from ... import base
-from .... import database
-from ....lang import _ as lang
+from .. import base
+from ... import database
+from ...lang import _ as lang
 
 
 @base.router.callback_query(F.data.startswith("delete_record"))

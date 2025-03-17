@@ -8,11 +8,10 @@ from aiogram.fsm.state import State, StatesGroup
 from aiogram.types import CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup, Message
 
 from . import info
-from .. import cancel, password
-from ... import base
-from .... import database
-from ....config import _ as config
-from ....lang import _ as lang
+from .. import base, cancel, password
+from ... import database
+from ...config import _ as config
+from ...lang import _ as lang
 
 
 class ChangeFields(StatesGroup):

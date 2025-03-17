@@ -1,8 +1,8 @@
 from aiogram.filters import Command
 from aiogram.types import Message
 
-from .. import base
-from ...lang import _ as lang
+from . import base
+from ..lang import _ as lang
 
 
 @base.message(Command("start"), ignore_key=True)

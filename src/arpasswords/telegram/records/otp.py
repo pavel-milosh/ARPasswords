@@ -6,9 +6,9 @@ from aiogram import F
 from aiogram.types import CallbackQuery, Message
 from pyotp import TOTP
 
-from ... import base
-from .... import database
-from ....lang import _ as lang
+from .. import base
+from ... import database
+from ...lang import _ as lang
 
 
 def _c_get_otp(totp: str) -> str:

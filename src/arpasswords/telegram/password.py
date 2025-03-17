@@ -7,8 +7,8 @@ from aiogram.exceptions import TelegramBadRequest
 from aiogram.filters import Command
 from aiogram.types import Message
 
-from .. import base
-from ...lang import _ as lang
+from . import base
+from ..lang import _ as lang
 
 
 def _generate(length: int = 20) -> str:

@@ -2,8 +2,8 @@ from aiogram import F
 from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery, InlineKeyboardButton
 
-from .. import base
-from ...lang import _ as lang
+from . import base
+from ..lang import _ as lang
 
 
 @base.router.callback_query(F.data == "cancel")

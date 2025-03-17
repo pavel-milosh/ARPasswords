@@ -5,9 +5,9 @@ from aiogram.filters import Command
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
 
 from . import info
-from ... import base
-from .... import database
-from ....lang import _ as lang
+from .. import base
+from ... import database
+from ...lang import _ as lang
 
 
 @base.message(Command("show_records"))

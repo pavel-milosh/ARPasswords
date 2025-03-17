@@ -4,8 +4,8 @@ import aiosqlite
 from aiogram.types import Message
 
 from . import show
-from ... import base
-from .... import database
+from .. import base
+from ... import database
 
 
 @base.message(router=base.alt_router)

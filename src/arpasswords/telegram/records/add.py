@@ -8,10 +8,9 @@ from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 
 from . import info
-from .. import cancel
-from ... import base
-from .... import database
-from ....lang import _ as lang
+from .. import base, cancel
+from ... import database
+from ...lang import _ as lang
 
 
 class AddRecord(StatesGroup):
