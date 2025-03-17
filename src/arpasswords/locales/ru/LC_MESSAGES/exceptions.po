@@ -4,5 +4,5 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: ru\n"
 
-msgid "decrypt"
+msgid "decryption"
 msgstr "<b>Ошибка расшифровки.</b> Вероятно, ключ шифрования, который установлен сейчас, не совпадает с ключом записи"

@@ -14,7 +14,7 @@ from ....lang import _ as lang
 
 
 @base.router.callback_query(F.data.startswith("record_info"))
-async def _callback_record_info(callback: CallbackQuery) -> None:
+async def _record_info(callback: CallbackQuery) -> None:
     await callback.answer()
     await callback.message.delete()
     label: str = callback.data[callback.data.find(" ") + 1:]
@@ -32,7 +32,7 @@ async def record(user_id: int, label: str) -> None:
     buttons: list[list[InlineKeyboardButton]] = [
         [InlineKeyboardButton(text=await lang("otp", "get"), callback_data=f"otp {label}")],
         [InlineKeyboardButton(text=await lang("change", "parameter"), callback_data=f"change_parameter {label}")],
-        [InlineKeyboardButton(text=await lang("records", "delete"), callback_data=f"sure_delete_record {label}")]
+        [InlineKeyboardButton(text=await lang("records", "delete"), callback_data=f"delete_record {label}")]
     ]
 
     bot_message: Message = await base.bot.send_message(

@@ -16,4 +16,4 @@ class DecryptionException(ARPasswordsException):
 
 
     async def message(self) -> None:
-        await telegram.base.bot.send_message(self.user_id, await lang("exceptions", "decrypt"))
+        await telegram.base.bot.send_message(self.user_id, await lang("exceptions", "decryption"))

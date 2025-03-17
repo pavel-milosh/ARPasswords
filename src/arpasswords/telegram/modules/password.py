@@ -28,16 +28,16 @@ def _generate(length: int = 20) -> str:
 
 
 async def generate(length: int = 20) -> str:
-    return await asyncio.to_thread(_generate, length=length)
+    return await asyncio.to_thread(_generate, length)
 
 
 @base.message(Command("generate_passwords"), ignore_key=True)
-async def _command(message: Message) -> None:
+async def _generate_passwords(message: Message) -> None:
     passwords: list[str] = [f"\t\t• <code>{html.escape(await generate())}</code>" for _ in range(10)]
     text: str = (await lang("commands", "generate_passwords_message")).format(passwords="\n".join(passwords))
-    await message.answer(text)
+    bot_message: Message = await message.answer(text)
     await asyncio.sleep(60**2)
     try:
-        await message.delete()
+        await bot_message.delete()
     except TelegramBadRequest:
         pass

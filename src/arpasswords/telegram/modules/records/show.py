@@ -11,7 +11,7 @@ from ....lang import _ as lang
 
 
 @base.message(Command("show_records"))
-async def _command_show_records(message: Message) -> None:
+async def _show_records(message: Message) -> None:
     await records(message.from_user.id)
 
 

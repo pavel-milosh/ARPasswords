@@ -49,7 +49,7 @@ async def _change_parameter(callback: CallbackQuery) -> None:
 
 
 @base.alt_router.callback_query(F.data.startswith("change_"))
-async def _change(callback: CallbackQuery, state: FSMContext) -> None:
+async def _change_(callback: CallbackQuery, state: FSMContext) -> None:
     await callback.answer()
     await callback.message.delete()
     label: str = callback.data[callback.data.find(" ") + 1:]

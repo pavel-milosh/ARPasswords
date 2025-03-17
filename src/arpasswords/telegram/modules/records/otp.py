@@ -21,7 +21,7 @@ async def _get_otp(totp: str) -> str:
 
 
 @base.router.callback_query(F.data.startswith("otp"))
-async def _totp(callback: CallbackQuery) -> None:
+async def _otp(callback: CallbackQuery) -> None:
     await callback.answer()
     label: str = callback.data[callback.data.find(" ") + 1:]
     async with aiosqlite.connect(os.path.join("users", f"{callback.from_user.id}.db")) as db:
