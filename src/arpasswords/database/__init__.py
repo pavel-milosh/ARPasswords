@@ -2,11 +2,13 @@ import os
 
 import aiosqlite
 
+from . import exceptions
 from ._operations import add, delete
 from ._parameters import parameter, labels
 
 
 __all__: list[str] = [
+    "exceptions",
     # _operations.py
     "add",
     "delete",
@@ -27,7 +29,8 @@ async def create(user_id: int) -> None:
                 phone TEXT,
                 password TEXT,
                 url TEXT,
-                totp TEXT
+                totp TEXT,
+                backup_codes TEXT
             )
     """
     async with aiosqlite.connect(os.path.join("users", f"{user_id}.db")) as db:

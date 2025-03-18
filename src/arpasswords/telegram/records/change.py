@@ -57,6 +57,8 @@ async def _change_(callback: CallbackQuery, state: FSMContext) -> None:
     text: str = (await lang("change", "new_value_for_parameter")).format(parameter=parameter_text)
     if parameter == "password":
         text += "\n" + (await lang("change", "suggest_password")).format(password=await password.generate())
+    elif parameter == "backup_codes":
+        text += "\n" + await lang("change", "backup_codes")
     keyboard: InlineKeyboardMarkup = InlineKeyboardMarkup(inline_keyboard=[[await cancel.button()]])
     await state.update_data(parameter=parameter, label=label)
     await state.update_data(bot_message=await callback.message.answer(text, reply_markup=keyboard))
@@ -68,9 +70,12 @@ async def _change_active(message: Message, state: FSMContext) -> None:
     parameter: str = await state.get_value("parameter")
     label: str = await state.get_value("label")
     bot_message: Message = await state.get_value("bot_message")
-    value: str = message.text
-    if value.lower() != "none" and parameter == "phone":
-        value = format_phone(value)
+    value: str | list[str] = message.text
+    if value.lower() != "none":
+        if parameter == "phone":
+            value = format_phone(value)
+        elif parameter == "backup_codes":
+            value = value.split("\n")
     async with aiosqlite.connect(os.path.join("users", f"{message.from_user.id}.db")) as db:
         await database.parameter(db, message.from_user.id, label, parameter, value)
         await db.commit()

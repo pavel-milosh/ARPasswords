@@ -10,6 +10,7 @@ from aiogram.fsm.state import State, StatesGroup
 from . import info
 from .. import base, cancel
 from ... import database
+from ...database.exceptions import LabelNotUnique
 from ...lang import _ as lang
 
 
@@ -32,7 +33,12 @@ async def _add_record(message: Message, state: FSMContext) -> None:
 async def _add_record_active(message: Message, state: FSMContext) -> None:
     bot_message: Message = await state.get_value("bot_message")
     async with aiosqlite.connect(os.path.join("users", f"{message.from_user.id}.db")) as db:
-        await database.add(db, message.text)
+        try:
+            await database.add(db, message.text)
+        except LabelNotUnique:
+            keyboard: InlineKeyboardMarkup = InlineKeyboardMarkup(inline_keyboard=[[await cancel.button()]])
+            await bot_message.edit_text(await lang("common", "incorrect_value"), reply_markup=keyboard)
+            return
         await db.commit()
     await state.clear()
     try:

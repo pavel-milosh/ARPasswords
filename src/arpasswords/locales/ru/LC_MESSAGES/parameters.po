@@ -27,3 +27,9 @@ msgstr "URL"
 
 msgid "totp"
 msgstr "TOTP"
+
+msgid "backup_codes"
+msgstr "коды восстановления"
+
+msgid "show"
+msgstr "<b>{parameter}:</b> {value}\n\n<i>Сообщение автоматически удалится через 2 минуты</i>"
