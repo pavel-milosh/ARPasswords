@@ -15,7 +15,7 @@ from ...lang import _ as lang
 async def _totp(message: Message) -> None:
     label: str = message.text[message.text.find(" ") + 1:]
     async with aiosqlite.connect(os.path.join("users", f"{message.from_user.id}.db")) as db:
-        totp: str = f"<code>{await database.parameter(db, message.from_user.id, label, "totp")}</code>"
+        totp: str = f"<code>{await database.parameter(db, message.from_user.id, label, 'totp')}</code>"
     parameter: str = (await lang("parameters", "totp")).capitalize()
     text: str = (await lang("parameters", "show")).format(parameter=parameter, value=totp)
     bot_message: Message = await message.answer(text)
