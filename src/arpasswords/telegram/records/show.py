@@ -23,6 +23,7 @@ async def _show_records(message: Message) -> None:
 
 @base.router.callback_query(F.data.startswith("forward"))
 async def _forward(callback: CallbackQuery) -> None:
+    await callback.answer()
     data_str: str = callback.data.replace("forward ", "")
     data: dict[str, Any] = {
         "user_id": int(data_str.split("|")[0]),
@@ -36,6 +37,7 @@ async def _forward(callback: CallbackQuery) -> None:
 
 @base.router.callback_query(F.data.startswith("back"))
 async def _back(callback: CallbackQuery) -> None:
+    await callback.answer()
     data_str: str = callback.data.replace("back ", "")
     data: dict[str, Any] = {
         "user_id": int(data_str.split("|")[0]),
