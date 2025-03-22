@@ -4,9 +4,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: ru\n"
 
-msgid "start"
-msgstr "Меню пользователя"
-
 msgid "start_message"
 msgstr ""
 "Здравствуйте, {name}! Я - менеджер паролей <b>ARPasswords</b>\n"
@@ -15,6 +12,18 @@ msgstr ""
 
 msgid "key"
 msgstr "Настройка ключа шифрования"
+
+msgid "backup"
+msgstr "Создать резервную копию"
+
+msgid "backup_very_large"
+msgstr "Файл базы данных <b>слишком большой</b> для отправки в Telegram!"
+
+msgid "backup_uploading"
+msgstr "Резервная копия загружается..."
+
+msgid "backup_done"
+msgstr "<b>Резервная копия готова!</b> Все данные зашифрованы Вашим ключом шифрования"
 
 msgid "generate_passwords"
 msgstr "Генерация паролей"

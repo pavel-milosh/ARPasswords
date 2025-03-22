@@ -74,6 +74,8 @@ async def _change_active(message: Message, state: FSMContext) -> None:
     if value.lower() != "none":
         if parameter == "phone":
             value = format_phone(value)
+        elif parameter == "totp":
+            value = value.replace(" ", "")
         elif parameter == "backup_codes":
             value = value.split("\n")
     async with aiosqlite.connect(os.path.join("users", f"{message.from_user.id}.db")) as db:
