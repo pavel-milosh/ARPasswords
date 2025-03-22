@@ -1,6 +1,8 @@
 import asyncio
 import datetime
+import os
 
+import aiosqlite
 import keyring
 from aiogram import F
 from aiogram.exceptions import TelegramBadRequest
@@ -10,6 +12,9 @@ from aiogram.fsm.state import State, StatesGroup
 from aiogram.types import CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup, Message
 
 from . import base, cancel
+from .. import database
+from ..exceptions import DecryptionException
+from ..config import _ as config
 from ..lang import _ as lang
 
 
@@ -58,10 +63,30 @@ async def _enter_key_active(message: Message, state: FSMContext) -> None:
             )
         except TelegramBadRequest:
             pass
-        finally:
+        return
+    await asyncio.to_thread(keyring.set_password, "keys", str(message.from_user.id), message.text)
+    async with aiosqlite.connect(os.path.join("users", f"{message.from_user.id}.db")) as db:
+        checked: bool = False
+        try:
+            for label in await database.labels(db):
+                for parameter in config()["parameters"]:
+                    value: str | list[str] | None = await database.parameter(db, message.from_user.id, label, parameter)
+                    if parameter != "label" and value is not None:
+                        checked = True
+                        break
+                if checked:
+                    break
+        except DecryptionException:
+            try:
+                await bot_message.edit_text(
+                    await lang("commands", "key_wrong"),
+                    reply_markup=InlineKeyboardMarkup(inline_keyboard=[[await cancel.button()]])
+                )
+            except TelegramBadRequest:
+                pass
+            await asyncio.to_thread(keyring.delete_password, "keys", str(message.from_user.id))
             return
     await state.clear()
-    await asyncio.to_thread(keyring.set_password, "keys", str(message.from_user.id), message.text)
     await bot_message.edit_text((await lang("commands", "key_installed")).format(key=message.text))
     await asyncio.sleep(10)
     await bot_message.delete()

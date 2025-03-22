@@ -34,6 +34,9 @@ msgstr "Ввести ключ"
 msgid "key_enter"
 msgstr "Введите ключ шифрования"
 
+msgid "key_wrong"
+msgstr "Ключ шифрования не совпадает с установленным ранее!"
+
 msgid "backup"
 msgstr "Создать резервную копию"
 

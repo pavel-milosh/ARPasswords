@@ -34,12 +34,11 @@ async def _change_parameter(callback: CallbackQuery) -> None:
     await callback.message.delete()
     label: str = callback.data[callback.data.find(" ") + 1:]
     buttons: list[list[InlineKeyboardButton]] = []
-    for key in config()["parameters"]:
-        if key != "key":
-            value: str = await lang("parameters", key)
-            button_text: str = (await lang("change", "parameter?")).format(parameter=value)
-            callback_data: str = f"change_{key} {label}"
-            buttons.append([InlineKeyboardButton(text=button_text, callback_data=callback_data)])
+    for parameter in config()["parameters"]:
+        value: str = await lang("parameters", parameter)
+        button_text: str = (await lang("change", "parameter?")).format(parameter=value)
+        callback_data: str = f"change_{parameter} {label}"
+        buttons.append([InlineKeyboardButton(text=button_text, callback_data=callback_data)])
     await callback.message.answer(
         await lang("change", "which_parameter"),
         reply_markup=InlineKeyboardMarkup(inline_keyboard=buttons)

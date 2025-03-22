@@ -24,9 +24,9 @@ async def _record_info(callback: CallbackQuery) -> None:
 async def record(user_id: int, label: str) -> None:
     parameters: dict[str, Any] = {}
     async with aiosqlite.connect(os.path.join("users", f"{user_id}.db")) as db:
-        for key in config()["parameters"]:
-            if key not in ("label", "key"):
-                parameters[key] = await database.parameter(db, user_id, label, key)
+        for parameter in config()["parameters"]:
+            if parameter != "label":
+                parameters[parameter] = await database.parameter(db, user_id, label, parameter)
         parameters["label"] = label
     text: str = (await lang("records", "info")).format(**parameters)
     buttons: list[list[InlineKeyboardButton]] = [
