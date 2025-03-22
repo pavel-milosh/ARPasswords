@@ -3,16 +3,16 @@ import os
 import aiosqlite
 
 from . import exceptions
-from ._operations import add, delete
-from ._parameters import parameter, labels
+from .operations import add, delete
+from .parameters import parameter, labels
 
 
 __all__: list[str] = [
     "exceptions",
-    # _operations.py
+    # operations.py
     "add",
     "delete",
-    # _parameters.py
+    # parameters.py
     "labels",
     "parameter"
 ]

@@ -17,19 +17,27 @@ msgstr ""
 "<i>Сообщение автоматически удалится через 2 минуты</i>"
 
 msgid "add"
-msgstr "Пожалуйста, введите метку для записи. <b>Она должна быть уникальной!</b>"
+msgstr "Пожалуйста, введите метку для записи. Она должна быть <b>уникальной!</b>"
 
 msgid "choose"
 msgstr "Выберите запись"
+
+msgid "not_found"
+msgstr "Записи не найдены"
 
 msgid "delete"
 msgstr "Удалить запись"
 
 msgid "sure_delete"
-msgstr "Вы уверены, что хотите удалить запись <b>{label}</b>?"
+msgstr "Вы уверены, что хотите удалить запись{label}?"
 
 msgid "deleted"
-msgstr "Запись <b>{label}</b> удалена"
+msgstr "Запись {label} удалена"
 
-msgid "not_found"
-msgstr "Записи не найдены"
+msgid "totp_code_message"
+msgstr ""
+"Ваш одноразовый код TOTP: <code>{totp_code}</code>\n"
+"Он будет активен 30 секунд. По истечению этого времени сообщение автоматически удалится"
+
+msgid "totp_code_button"
+msgstr "Получить TOTP-код (2fa)"

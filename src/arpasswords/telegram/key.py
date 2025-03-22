@@ -21,14 +21,10 @@ class EnterKey(StatesGroup):
 @base.message(Command("key"), ignore_key=True)
 async def _key(message: Message, state: FSMContext) -> None:
     key: str | None = await asyncio.to_thread(keyring.get_password, "keys", str(message.from_user.id))
-    if key is None:
-        hours: str = await lang("key", "empty")
-    else:
-        hours: str = f"около {24 - datetime.datetime.now().hour}"
     buttons: list[list[InlineKeyboardButton]] = [
-        [InlineKeyboardButton(text=await lang("key", "button"), callback_data="enter_key")]
+        [InlineKeyboardButton(text=await lang("commands", "key_button"), callback_data="enter_key")]
     ]
-    text: str = (await lang("key", "initial")).format(key=key, hours=hours)
+    text: str = (await lang("commands", "key_message")).format(key=key, hours=24 - datetime.datetime.now().hour)
     bot_message = await message.answer(text, reply_markup=InlineKeyboardMarkup(inline_keyboard=buttons))
     await state.update_data(bot_message=bot_message)
     await asyncio.sleep(120)
@@ -43,7 +39,7 @@ async def _enter_key(callback: CallbackQuery, state: FSMContext) -> None:
     await callback.answer()
     await callback.message.delete()
     message: Message = await callback.message.answer(
-        await lang("key", "enter"),
+        await lang("commands", "key_enter"),
         reply_markup=InlineKeyboardMarkup(inline_keyboard=[[await cancel.button()]])
     )
     await state.update_data(bot_message=message)
@@ -66,6 +62,6 @@ async def _enter_key_active(message: Message, state: FSMContext) -> None:
             return
     await state.clear()
     await asyncio.to_thread(keyring.set_password, "keys", str(message.from_user.id), message.text)
-    await bot_message.edit_text((await lang("key", "installed")).format(key=message.text))
+    await bot_message.edit_text((await lang("commands", "key_installed")).format(key=message.text))
     await asyncio.sleep(10)
     await bot_message.delete()

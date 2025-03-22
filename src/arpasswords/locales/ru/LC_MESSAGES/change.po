@@ -14,7 +14,7 @@ msgid "which_parameter"
 msgstr "Какой параметр изменить?"
 
 msgid "new_value_for_parameter"
-msgstr "Введите новое значение для параметра <b>{parameter}</b>. Чтобы сбросить значение, введите <code>None</code>"
+msgstr "Введите новое значение для параметра {parameter}. Чтобы сбросить значение, введите <code>None</code>"
 
 msgid "suggest_password"
 msgstr "<i>Пароль, предложенный системой: <code>{password}</code></i>"

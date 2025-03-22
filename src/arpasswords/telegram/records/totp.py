@@ -2,13 +2,20 @@ import asyncio
 import os
 
 import aiosqlite
+from aiogram import F
 from aiogram.exceptions import TelegramBadRequest
 from aiogram.filters import Command
-from aiogram.types import Message
+from aiogram.types import CallbackQuery, Message
+from pyotp import TOTP
 
 from .. import base
 from ... import database
 from ...lang import _ as lang
+
+
+def _get_totp_code(totp: str) -> str:
+    code: str = TOTP(totp).now()
+    return code[:3] + " " + code[3:]
 
 
 @base.message(Command("totp"))
@@ -24,3 +31,16 @@ async def _totp(message: Message) -> None:
         await bot_message.delete()
     except TelegramBadRequest:
         pass
+
+
+@base.router.callback_query(F.data.startswith("totp_code"))
+async def _totp_code(callback: CallbackQuery) -> None:
+    await callback.answer()
+    label: str = callback.data[callback.data.find(" ") + 1:]
+    async with aiosqlite.connect(os.path.join("users", f"{callback.from_user.id}.db")) as db:
+        totp: str = await database.parameter(db, callback.from_user.id, label, "totp")
+    totp_code: str = await asyncio.to_thread(_get_totp_code, totp)
+    text: str = (await lang("records", "totp_code_message")).format(totp_code=totp_code)
+    message: Message = await callback.message.answer(text)
+    await asyncio.sleep(30)
+    await message.delete()

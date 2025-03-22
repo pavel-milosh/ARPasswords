@@ -4,7 +4,7 @@ from sqlite3 import OperationalError
 
 from aiosqlite import Connection
 
-from . import _operations
+from . import operations
 from .. import crypto
 
 
@@ -33,7 +33,7 @@ async def _do(
             await db.execute(query, (value, label))
     except OperationalError as e:
         if "no such column" in str(e):
-            await _operations.update_legacy(db)
+            await operations.update_legacy(db)
             return await _do(db, user_id, label, parameter, value)
         else:
             raise e

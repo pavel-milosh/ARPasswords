@@ -11,7 +11,7 @@ msgid "cancel"
 msgstr "Отменить"
 
 msgid "operation_interrupted"
-msgstr "<b>Операция прервана</b>"
+msgstr "Операция прервана"
 
 msgid "incorrect_value"
-msgstr "<b>Недопустимое значение.</b> Попробуйте еще раз"
+msgstr "Недопустимое значение. Попробуйте еще раз"

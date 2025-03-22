@@ -64,10 +64,10 @@ async def _buttons(data: dict[str, Any]) -> list[list[InlineKeyboardButton]]:
     if pages > 1:
         buttons = buttons[10 * (data["current_page"] - 1):10 * data["current_page"]]
         data_str: str = "|".join([str(value) for value in data.values()])
-        if data["current_page"] < pages:
-            buttons.append([InlineKeyboardButton(text=">>>", callback_data=f"forward " + data_str)])
         if data["current_page"] != 1:
             buttons.append([InlineKeyboardButton(text="<<<", callback_data=f"back " + data_str)])
+        if data["current_page"] < pages:
+            buttons.append([InlineKeyboardButton(text=">>>", callback_data=f"forward " + data_str)])
     return buttons
 
 

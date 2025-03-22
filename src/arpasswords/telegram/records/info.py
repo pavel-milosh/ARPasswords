@@ -30,7 +30,7 @@ async def record(user_id: int, label: str) -> None:
         parameters["label"] = label
     text: str = (await lang("records", "info")).format(**parameters)
     buttons: list[list[InlineKeyboardButton]] = [
-        [InlineKeyboardButton(text=await lang("otp", "get"), callback_data=f"otp {label}")],
+        [InlineKeyboardButton(text=await lang("records", "totp_code_button"), callback_data=f"totp_code {label}")],
         [InlineKeyboardButton(text=await lang("change", "parameter"), callback_data=f"change_parameter {label}")],
         [InlineKeyboardButton(text=await lang("records", "delete"), callback_data=f"delete_record {label}")]
     ]
