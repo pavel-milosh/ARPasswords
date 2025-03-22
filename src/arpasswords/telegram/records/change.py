@@ -31,7 +31,6 @@ def format_phone(phone: str) -> str:
 
 @base.router.callback_query(F.data.startswith("change_parameter"))
 async def _change_parameter(callback: CallbackQuery) -> None:
-    await callback.answer()
     await callback.message.delete()
     label: str = callback.data[callback.data.find(" ") + 1:]
     buttons: list[list[InlineKeyboardButton]] = []
@@ -45,11 +44,11 @@ async def _change_parameter(callback: CallbackQuery) -> None:
         await lang("change", "which_parameter"),
         reply_markup=InlineKeyboardMarkup(inline_keyboard=buttons)
     )
+    await callback.answer(await lang("common", "request_operated"))
 
 
 @base.alt_router.callback_query(F.data.startswith("change_"))
 async def _change_(callback: CallbackQuery, state: FSMContext) -> None:
-    await callback.answer()
     await callback.message.delete()
     label: str = callback.data[callback.data.find(" ") + 1:]
     parameter: str = callback.data.split()[0].replace("change_", "")
@@ -63,6 +62,7 @@ async def _change_(callback: CallbackQuery, state: FSMContext) -> None:
     await state.update_data(parameter=parameter, label=label)
     await state.update_data(bot_message=await callback.message.answer(text, reply_markup=keyboard))
     await state.set_state(ChangeFields.active)
+    await callback.answer(await lang("common", "request_operated"))
 
 
 @base.message(ChangeFields.active)

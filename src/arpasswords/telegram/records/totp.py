@@ -35,7 +35,6 @@ async def _totp(message: Message) -> None:
 
 @base.router.callback_query(F.data.startswith("totp_code"))
 async def _totp_code(callback: CallbackQuery) -> None:
-    await callback.answer()
     label: str = callback.data[callback.data.find(" ") + 1:]
     async with aiosqlite.connect(os.path.join("users", f"{callback.from_user.id}.db")) as db:
         totp: str = await database.parameter(db, callback.from_user.id, label, "totp")
@@ -44,3 +43,4 @@ async def _totp_code(callback: CallbackQuery) -> None:
     message: Message = await callback.message.answer(text)
     await asyncio.sleep(30)
     await message.delete()
+    await callback.answer(await lang("records", "totp_code_callback"))

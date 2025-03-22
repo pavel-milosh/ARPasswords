@@ -36,7 +36,6 @@ async def _key(message: Message, state: FSMContext) -> None:
 
 @base.router.callback_query(F.data == "enter_key")
 async def _enter_key(callback: CallbackQuery, state: FSMContext) -> None:
-    await callback.answer()
     await callback.message.delete()
     message: Message = await callback.message.answer(
         await lang("commands", "key_enter"),
@@ -44,6 +43,7 @@ async def _enter_key(callback: CallbackQuery, state: FSMContext) -> None:
     )
     await state.update_data(bot_message=message)
     await state.set_state(EnterKey.active)
+    await callback.answer(await lang("common", "request_operated"))
 
 
 @base.message(EnterKey.active, ignore_key=True)

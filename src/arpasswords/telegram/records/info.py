@@ -15,10 +15,10 @@ from ...lang import _ as lang
 
 @base.router.callback_query(F.data.startswith("record_info"))
 async def _record_info(callback: CallbackQuery) -> None:
-    await callback.answer()
     await callback.message.delete()
     label: str = callback.data[callback.data.find(" ") + 1:]
     await record(callback.from_user.id, label)
+    await callback.answer(await lang("common", "request_operated"))
 
 
 async def record(user_id: int, label: str) -> None:

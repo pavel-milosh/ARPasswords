@@ -39,5 +39,8 @@ msgstr ""
 "Ваш одноразовый код TOTP: <code>{totp_code}</code>\n"
 "Он будет активен 30 секунд. По истечению этого времени сообщение автоматически удалится"
 
+msgid "totp_code_callback"
+msgstr "Код действителен 30 секунд"
+
 msgid "totp_code_button"
 msgstr "Получить TOTP-код (2fa)"

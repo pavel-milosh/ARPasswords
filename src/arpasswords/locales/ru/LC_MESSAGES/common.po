@@ -10,6 +10,9 @@ msgstr "да"
 msgid "cancel"
 msgstr "Отменить"
 
+msgid "request_operated"
+msgstr "Запрос обработан"
+
 msgid "operation_interrupted"
 msgstr "Операция прервана"
 
