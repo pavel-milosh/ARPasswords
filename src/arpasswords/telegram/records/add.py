@@ -37,7 +37,7 @@ async def _add_record_active(message: Message, state: FSMContext) -> None:
             await database.add(db, message.text)
         except LabelNotUnique:
             keyboard: InlineKeyboardMarkup = InlineKeyboardMarkup(inline_keyboard=[[await cancel.button()]])
-            await bot_message.edit_text(await lang("common", "incorrect_value"), reply_markup=keyboard)
+            await bot_message.edit_text(await lang("records", "label_not_unique"), reply_markup=keyboard)
             return
         await db.commit()
     await state.clear()
@@ -45,4 +45,5 @@ async def _add_record_active(message: Message, state: FSMContext) -> None:
         await bot_message.delete()
     except TelegramBadRequest:
         pass
-    await info.record(message.from_user.id, message.text)
+    finally:
+        await info.record(message.from_user.id, message.text)

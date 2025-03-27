@@ -9,7 +9,7 @@ from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 
-from .exceptions import DecryptionException
+from .exceptions import Decryption
 
 SALT_SIZE: int = 16
 NONCE_SIZE: int = 12
@@ -59,5 +59,5 @@ async def decrypt(text: str, user_id: int) -> str:
     try:
         return await asyncio.to_thread(_decrypt, str(text), user_id)
     except InvalidTag:
-        exception: DecryptionException = DecryptionException(user_id)
+        exception: Decryption = Decryption(user_id)
         raise exception
