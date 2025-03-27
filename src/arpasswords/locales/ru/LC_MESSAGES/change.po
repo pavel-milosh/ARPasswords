@@ -4,6 +4,9 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: ru\n"
 
+msgid "empty"
+msgstr "Пустое значение"
+
 msgid "parameter"
 msgstr "Изменить параметр"
 
@@ -14,7 +17,7 @@ msgid "which_parameter"
 msgstr "Какой параметр изменить?"
 
 msgid "new_value_for_parameter"
-msgstr "Введите новое значение для параметра {parameter}. Чтобы сбросить значение, введите <code>None</code>"
+msgstr "Введите новое значение для параметра {parameter}"
 
 msgid "suggest_password"
 msgstr "<i>Пароль, предложенный системой: <code>{password}</code></i>"

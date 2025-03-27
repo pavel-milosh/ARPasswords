@@ -52,9 +52,9 @@ async def _back(callback: CallbackQuery) -> None:
 async def _buttons(data: dict[str, Any]) -> list[list[InlineKeyboardButton]]:
     async with aiosqlite.connect(os.path.join("users", f"{data['user_id']}.db")) as db:
         if data["message_text"] is not None:
-            labels: list[str] = [label for label in await database.labels(db) if data["message_text"].lower() in label.lower()]
+            labels: list[str] = [label for label in await database.values(db, "label") if data["message_text"].lower() in label.lower()]
         else:
-            labels: list[str] = await database.labels(db)
+            labels: list[str] = await database.values(db, "label")
 
     pages: int = math.ceil(len(labels) / 10)
     buttons: list[list[InlineKeyboardButton]] = [
@@ -75,9 +75,9 @@ async def _buttons(data: dict[str, Any]) -> list[list[InlineKeyboardButton]]:
 async def records(message: Message, find: bool) -> None:
     async with aiosqlite.connect(os.path.join("users", f"{message.from_user.id}.db")) as db:
         if find:
-            labels: list[str] = [label for label in await database.labels(db) if message.text.lower() in label.lower()]
+            labels: list[str] = [label for label in await database.values(db, "label") if message.text.lower() in label.lower()]
         else:
-            labels: list[str] = await database.labels(db)
+            labels: list[str] = await database.values(db, "label")
 
     if len(labels) == 0:
         await base.bot.send_message(message.from_user.id, await lang("records", "not_found"))

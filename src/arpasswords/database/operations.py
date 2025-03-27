@@ -23,8 +23,8 @@ async def delete(db: Connection, label: str) -> None:
 async def update_legacy(db: Connection) -> None:
     queries: list[str] = [
         "ALTER TABLE passwords ADD COLUMN backup_codes TEXT",
-        "ALTER TABLE passwords DROP COLUMN url",
-        "ALTER TABLE passwords ADD COLUMN note TEXT"
+        "ALTER TABLE passwords ADD COLUMN note TEXT",
+        "ALTER TABLE passwords DROP COLUMN url"
     ]
     for query in queries:
         try:

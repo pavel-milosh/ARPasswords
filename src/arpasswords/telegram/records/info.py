@@ -17,8 +17,8 @@ from ...lang import _ as lang
 async def _record_info(callback: CallbackQuery) -> None:
     await callback.message.delete()
     label: str = callback.data[callback.data.find(" ") + 1:]
-    await record(callback.from_user.id, label)
     await callback.answer(await lang("common", "request_operated"))
+    await record(callback.from_user.id, label)
 
 
 async def record(user_id: int, label: str) -> None:

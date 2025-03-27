@@ -68,7 +68,7 @@ async def _enter_key_active(message: Message, state: FSMContext) -> None:
     async with aiosqlite.connect(os.path.join("users", f"{message.from_user.id}.db")) as db:
         checked: bool = False
         try:
-            for label in await database.labels(db):
+            for label in await database.values(db, "label"):
                 for parameter in config()["parameters"]:
                     value: str | list[str] | None = await database.parameter(db, message.from_user.id, label, parameter)
                     if parameter != "label" and value is not None:

@@ -4,7 +4,7 @@ import aiosqlite
 
 from . import exceptions
 from .operations import add, delete
-from .parameters import parameter, labels
+from .parameters import values, parameter
 
 
 __all__: list[str] = [
@@ -13,7 +13,7 @@ __all__: list[str] = [
     "add",
     "delete",
     # parameters.py
-    "labels",
+    "values",
     "parameter"
 ]
 

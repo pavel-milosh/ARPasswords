@@ -29,7 +29,7 @@ msgid "delete"
 msgstr "Удалить запись"
 
 msgid "sure_delete"
-msgstr "Вы уверены, что хотите удалить запись{label}?"
+msgstr "Вы уверены, что хотите удалить запись {label}?"
 
 msgid "deleted"
 msgstr "Запись {label} удалена"

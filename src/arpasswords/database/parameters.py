@@ -39,9 +39,17 @@ async def _do(
             raise e
 
 
-async def labels(db: Connection) -> list[str]:
-    async with db.execute("SELECT * FROM passwords") as cursor:
-        return [record[0] for record in await cursor.fetchall()]
+async def values(db: Connection, parameter: str, user_id: int = 0) -> list[str]:
+    async with db.execute(f"SELECT {parameter} FROM passwords") as cursor:
+        values: list[str] = []
+        for value in await cursor.fetchall():
+            if value[0] is None:
+                continue
+            if parameter == "label":
+                values.append(value[0])
+            else:
+                values.append(await crypto.decrypt(value[0], user_id))
+        return values
 
 
 async def parameter(
