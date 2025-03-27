@@ -19,7 +19,7 @@ class AddRecord(StatesGroup):
     bot_message: Message
 
 
-@base.message(Command("add_record"))
+@base.message(Command("add"))
 async def _add_record(message: Message, state: FSMContext) -> None:
     bot_message: Message = await message.answer(
         await lang("records", "add"),

@@ -28,9 +28,9 @@ async def create(user_id: int) -> None:
                 email TEXT,
                 phone TEXT,
                 password TEXT,
-                url TEXT,
                 totp TEXT,
-                backup_codes TEXT
+                backup_codes TEXT,
+                note TEXT
             )
     """
     async with aiosqlite.connect(os.path.join("users", f"{user_id}.db")) as db:

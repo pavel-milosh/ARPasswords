@@ -22,14 +22,14 @@ msgstr "номер телефона"
 msgid "password"
 msgstr "пароль"
 
-msgid "url"
-msgstr "URL"
-
 msgid "totp"
 msgstr "TOTP"
 
 msgid "backup_codes"
 msgstr "коды восстановления"
+
+msgid "note"
+msgstr "примечание"
 
 msgid "show"
 msgstr "<b>{parameter}:</b> {value}\n\n<i>Сообщение автоматически удалится через 2 минуты</i>"

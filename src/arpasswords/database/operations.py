@@ -1,4 +1,4 @@
-from sqlite3 import IntegrityError
+from sqlite3 import IntegrityError, OperationalError
 
 from aiosqlite import Connection
 
@@ -21,5 +21,13 @@ async def delete(db: Connection, label: str) -> None:
 
 
 async def update_legacy(db: Connection) -> None:
-    query: str = "ALTER TABLE passwords ADD COLUMN backup_codes TEXT"
-    await db.execute(query)
+    queries: list[str] = [
+        "ALTER TABLE passwords ADD COLUMN backup_codes TEXT",
+        "ALTER TABLE passwords DROP COLUMN url",
+        "ALTER TABLE passwords ADD COLUMN note TEXT"
+    ]
+    for query in queries:
+        try:
+            await db.execute(query)
+        except OperationalError:
+            pass

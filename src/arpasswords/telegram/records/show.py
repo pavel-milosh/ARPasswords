@@ -17,7 +17,7 @@ from ...lang import _ as lang
 async def _find(message: Message) -> None:
     await records(message, True)
 
-@base.message(Command("show_records"))
+@base.message(Command("show"))
 async def _show_records(message: Message) -> None:
     await records(message, False)
 

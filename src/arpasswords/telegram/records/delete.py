@@ -1,12 +1,23 @@
+import asyncio
 import os
 
 import aiosqlite
+import keyring
 from aiogram import F
-from aiogram.types import CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup
+from aiogram.filters import Command
+from aiogram.fsm.context import FSMContext
+from aiogram.fsm.state import State, StatesGroup
+from aiogram.types import CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup, Message
+from keyring.errors import PasswordDeleteError
 
 from .. import base
 from ... import database
 from ...lang import _ as lang
+
+
+class DeleteAll(StatesGroup):
+    active: State = State()
+    bot_messsage: Message
 
 
 @base.router.callback_query(F.data.startswith("delete_record"))
@@ -31,3 +42,25 @@ async def _sure_delete_record(callback: CallbackQuery) -> None:
         await db.commit()
     await callback.message.edit_text(text)
     await callback.answer(text)
+
+
+@base.message(Command("delete_all"))
+async def _delete_all(message: Message, state: FSMContext) -> None:
+    text: str = (await lang("commands", "delete_all_message")).format(user_id=message.from_user.id)
+    await state.update_data(bot_message=await message.answer(text))
+    await state.set_state(DeleteAll.active)
+
+
+@base.message(DeleteAll.active)
+async def _delete_all_active(message: Message, state: FSMContext) -> None:
+    bot_message: Message = await state.get_value("bot_message")
+    await state.clear()
+    if message.text == f"delete_all {message.from_user.id}":
+        os.remove(os.path.join("users", f"{message.from_user.id}.db"))
+        try:
+            await asyncio.to_thread(keyring.delete_password, "keys", str(message.from_user.id))
+        except PasswordDeleteError:
+            pass
+        await bot_message.edit_text(await lang("commands", "delete_all_deleted"))
+    else:
+        await bot_message.edit_text(await lang("commands", "delete_all_not_deleted"))

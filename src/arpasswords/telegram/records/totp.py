@@ -14,8 +14,7 @@ from ...lang import _ as lang
 
 
 def _get_totp_code(totp: str) -> str:
-    code: str = TOTP(totp).now()
-    return code[:3] + " " + code[3:]
+    return TOTP(totp).now()
 
 
 @base.message(Command("totp"))
