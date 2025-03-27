@@ -19,8 +19,8 @@ msgstr "Какой параметр изменить?"
 msgid "new_value_for_parameter"
 msgstr "Введите новое значение для параметра {parameter}"
 
-msgid "suggest_password"
+msgid "password_note"
 msgstr "<i>Пароль, предложенный системой: <code>{password}</code></i>"
 
-msgid "backup_codes"
+msgid "backup_codes_note"
 msgstr "<i>Каждый код должен быть написан с новой строки!</i>"

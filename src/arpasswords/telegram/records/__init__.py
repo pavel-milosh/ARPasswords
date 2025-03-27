@@ -1,1 +1,1 @@
-from . import add, backup, backup_codes, change, delete, info, notes, show, totp
+from . import add, backup, backup_codes, delete, edit, info, notes, show, totp
