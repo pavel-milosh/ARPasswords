@@ -22,22 +22,26 @@ async def _record_info(callback: CallbackQuery) -> None:
 
 
 async def record(user_id: int, label: str) -> None:
-    parameters: dict[str, Any] = {}
+    text: str = ""
     async with aiosqlite.connect(os.path.join("users", f"{user_id}.db")) as db:
-        for parameter in config()["parameters"]:
-            if parameter != "label":
-                parameters[parameter] = await database.parameter(db, user_id, label, parameter)
-        parameters["label"] = label
-    text: str = (await lang("records", "info")).format(**parameters)
+        for parameter in config()["parameters"] + await database.additional_parameters(db, user_id, label):
+            name: str = (await lang("parameters", parameter)).capitalize()
+            if parameter == "label":
+                continue
+            if parameter in ("totp", "backup_codes", "note"):
+                text += f"\n\t\t\t\t\t<b>{name}:</b>  <code>/{parameter} {label}</code>"
+            else:
+                value: str | None = await database.parameter(db, user_id, label, parameter)
+                text += f"\n\t\t\t\t\t<b>{name}:</b>  <code>{value}</code>"
     buttons: list[list[InlineKeyboardButton]] = [
         [InlineKeyboardButton(text=await lang("records", "totp_code_button"), callback_data=f"totp_code {label}")],
         [InlineKeyboardButton(text=await lang("edit", "parameter"), callback_data=f"edit_parameter {label}")],
+        [InlineKeyboardButton(text=await lang("records", "add_parameter"), callback_data=f"add_parameter {label}")],
         [InlineKeyboardButton(text=await lang("records", "delete"), callback_data=f"delete_record {label}")]
     ]
-
     bot_message: Message = await base.bot.send_message(
         user_id,
-        text,
+        (await lang("records", "info")).format(label=label, info=text),
         reply_markup=InlineKeyboardMarkup(inline_keyboard=buttons)
     )
     await asyncio.sleep(120)

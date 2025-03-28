@@ -4,7 +4,7 @@ import aiosqlite
 
 from . import exceptions
 from .operations import add, delete
-from .parameters import values, parameter
+from .parameters import values, parameter, additional_parameters
 
 
 __all__: list[str] = [
@@ -14,7 +14,8 @@ __all__: list[str] = [
     "delete",
     # parameters.py
     "values",
-    "parameter"
+    "parameter",
+    "additional_parameters"
 ]
 
 
@@ -30,7 +31,12 @@ async def create(user_id: int) -> None:
                 password TEXT,
                 totp TEXT,
                 backup_codes TEXT,
-                note TEXT
+                note TEXT,
+                pincode TEXT,
+                site TEXT,
+                recovery_email TEXT,
+                previous_password TEXT,
+                card TEXT
             )
     """
     async with aiosqlite.connect(os.path.join("users", f"{user_id}.db")) as db:

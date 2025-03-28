@@ -31,5 +31,20 @@ msgstr "коды восстановления"
 msgid "note"
 msgstr "примечание"
 
+msgid "pincode"
+msgstr "пин-код"
+
+msgid "site"
+msgstr "сайт"
+
+msgid "recovery_email"
+msgstr "резервная почта"
+
+msgid "previous_password"
+msgstr "предыдущий пароль"
+
+msgid "card"
+msgstr "номер карты"
+
 msgid "show"
 msgstr "<b>{parameter}:</b> {value}\n\n<i>Сообщение автоматически удалится через 2 минуты</i>"

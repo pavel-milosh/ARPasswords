@@ -41,7 +41,7 @@ async def _buttons(user_id: int, parameter: str) -> list[list[InlineKeyboardButt
         most_common_values: list[str] = list(dict(Counter(values).most_common()).keys())
         for value in most_common_values:
             buttons.append([InlineKeyboardButton(text=value, callback_data=f"quick {value}")])
-    buttons.append([InlineKeyboardButton(text=await lang("edit", "empty"), callback_data="quick None")])
+    buttons.append([InlineKeyboardButton(text=await lang("edit", "clear"), callback_data="quick None")])
     buttons.append([await cancel.button()])
     return buttons
 
@@ -51,11 +51,11 @@ async def _edit_parameter(callback: CallbackQuery) -> None:
     await callback.message.delete()
     label: str = callback.data[callback.data.find(" ") + 1:]
     buttons: list[list[InlineKeyboardButton]] = []
-    for parameter in config()["parameters"]:
-        value: str = await lang("parameters", parameter)
-        button_text: str = (await lang("edit", "parameter?")).format(parameter=value)
-        callback_data: str = f"edit_{parameter} {label}"
-        buttons.append([InlineKeyboardButton(text=button_text, callback_data=callback_data)])
+    async with aiosqlite.connect(os.path.join("users", f"{callback.from_user.id}.db")) as db:
+        for parameter in config()["parameters"] + await database.additional_parameters(db, callback.from_user.id, label):
+            value: str = (await lang("parameters", parameter)).capitalize()
+            callback_data: str = f"edit_{parameter} {label}"
+            buttons.append([InlineKeyboardButton(text=value, callback_data=callback_data)])
     await callback.message.answer(
         await lang("edit", "which_parameter"),
         reply_markup=InlineKeyboardMarkup(inline_keyboard=buttons)

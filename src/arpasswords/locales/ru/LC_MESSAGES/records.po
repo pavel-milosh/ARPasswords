@@ -6,18 +6,15 @@ msgstr ""
 
 msgid "info"
 msgstr ""
-"Информация о записи <code>{label}</code>:<b>\n"
-"\t\t\t\t\t\tЛогин: <code>{login}</code>\n"
-"\t\t\t\t\t\tПочта: <code>{email}</code>\n"
-"\t\t\t\t\t\tНомер телефона: <code>{phone}</code>\n"
-"\t\t\t\t\t\tПароль: <code>{password}</code>\n"
-"\t\t\t\t\t\tTOTP: <code>/totp {label}</code>\n"
-"\t\t\t\t\t\tКоды восстановления: <code>/backup_codes {label}</code>\n"
-"\t\t\t\t\t\tПримечание: <code>/note {label}</code></b>\n\n"
+"Информация о записи <code>{label}</code>:"
+"{info}\n\n"
 "<i>Сообщение автоматически удалится через 2 минуты</i>"
 
 msgid "add"
 msgstr "Пожалуйста, введите метку для записи. Она должна быть <b>уникальной!</b>"
+
+msgid "add_parameter"
+msgstr "Добавить параметр"
 
 msgid "choose"
 msgstr "Выберите запись"
@@ -33,6 +30,9 @@ msgstr "Запись {label} удалена"
 
 msgid "not_found"
 msgstr "Записи не найдены"
+
+msgid "choose_parameter"
+msgstr "Выберите параметр"
 
 msgid "totp_code_message"
 msgstr ""

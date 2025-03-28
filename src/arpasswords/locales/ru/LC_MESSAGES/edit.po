@@ -4,14 +4,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: ru\n"
 
-msgid "empty"
-msgstr "Пустое значение"
+msgid "clear"
+msgstr "Очистить значение"
 
 msgid "parameter"
 msgstr "Изменить параметр"
-
-msgid "parameter?"
-msgstr "Изменить {parameter}"
 
 msgid "which_parameter"
 msgstr "Какой параметр изменить?"

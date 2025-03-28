@@ -24,6 +24,11 @@ async def update_legacy(db: Connection) -> None:
     queries: list[str] = [
         "ALTER TABLE passwords ADD COLUMN backup_codes TEXT",
         "ALTER TABLE passwords ADD COLUMN note TEXT",
+        "ALTER TABLE passwords ADD COLUMN pincode TEXT",
+        "ALTER TABLE passwords ADD COLUMN site TEXT",
+        "ALTER TABLE passwords ADD COLUMN recovery_email TEXT",
+        "ALTER TABLE passwords ADD COLUMN previous_password TEXT",
+        "ALTER TABLE passwords ADD COLUMN card TEXT",
         "ALTER TABLE passwords DROP COLUMN url"
     ]
     for query in queries:

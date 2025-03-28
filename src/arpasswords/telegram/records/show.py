@@ -17,9 +17,11 @@ from ...lang import _ as lang
 async def _find(message: Message) -> None:
     await records(message, True)
 
+
 @base.message(Command("show"))
 async def _show_records(message: Message) -> None:
     await records(message, False)
+
 
 @base.router.callback_query(F.data.startswith("forward"))
 async def _forward(callback: CallbackQuery) -> None:
@@ -69,7 +71,6 @@ async def _buttons(data: dict[str, Any]) -> list[list[InlineKeyboardButton]]:
         if data["current_page"] < pages:
             buttons.append([InlineKeyboardButton(text=">>>", callback_data=f"forward " + data_str)])
     return buttons
-
 
 
 async def records(message: Message, find: bool) -> None:

@@ -6,6 +6,7 @@ from aiosqlite import Connection
 
 from . import operations
 from .. import crypto
+from ..config import _ as config
 
 
 async def _do(
@@ -40,7 +41,8 @@ async def _do(
 
 
 async def values(db: Connection, parameter: str, user_id: int = 0) -> list[str]:
-    async with db.execute(f"SELECT {parameter} FROM passwords") as cursor:
+    query: str = f"SELECT {parameter} FROM passwords"
+    async with db.execute(query) as cursor:
         values: list[str] = []
         for value in await cursor.fetchall():
             if value[0] is None:
@@ -68,3 +70,11 @@ async def parameter(
     if isinstance(value, list):
         value = json.dumps(value, ensure_ascii=False)
     await _do(db, user_id, label, parameter, value)
+
+
+async def additional_parameters(db: Connection, user_id: int, label: str) -> list[str]:
+    return [
+        additional_parameter
+        for additional_parameter in config()["additional_parameters"]
+        if await parameter(db, user_id, label, additional_parameter) is not None
+    ]
