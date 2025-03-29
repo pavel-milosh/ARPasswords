@@ -1,5 +1,4 @@
 import os
-import re
 from collections import Counter
 
 import aiosqlite
@@ -10,8 +9,8 @@ from aiogram.fsm.state import State, StatesGroup
 from aiogram.types import CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup, Message
 
 from . import info
-from .. import base, cancel, password
-from ... import database
+from .. import base, cancel
+from ... import database, utilities
 from ...config import _ as config
 from ...exceptions import PhoneNotCorrect
 from ...lang import _ as lang
@@ -22,15 +21,6 @@ class EditFields(StatesGroup):
     bot_message: Message
     label: str
     parameter: str
-
-
-def format_phone(phone: str) -> str:
-    digits: str = re.sub(r"\D", "", phone)
-    if len(digits) == 11:
-        return f"+7 ({digits[1:4]}) {digits[4:7]}-{digits[7:9]}-{digits[9:]}"
-    elif len(digits) == 10:
-        return f"+7 ({digits[0:3]}) {digits[3:6]}-{digits[6:8]}-{digits[8:]}"
-    raise PhoneNotCorrect()
 
 
 async def _buttons(user_id: int, parameter: str) -> list[list[InlineKeyboardButton]]:
@@ -71,7 +61,7 @@ async def _edit(callback: CallbackQuery, state: FSMContext) -> None:
     parameter_text: str = (await lang("parameters", parameter)).capitalize()
     text: str = (await lang("edit", "new_value_for_parameter")).format(parameter=parameter_text)
     if parameter == "password":
-        text += "\n" + (await lang("edit", "password_note")).format(password=await password.generate())
+        text += "\n" + (await lang("edit", "password_note")).format(password=await utilities.password.generate())
     elif parameter == "backup_codes":
         text += "\n" + await lang("edit", "backup_codes_note")
     buttons: list[list[InlineKeyboardButton]] = await _buttons(callback.message.chat.id, parameter)
@@ -95,7 +85,7 @@ async def _edit_active(object: Message | CallbackQuery, state: FSMContext) -> No
     if value.lower() != "none":
         if parameter == "phone":
             try:
-                value = format_phone(value)
+                value = utilities.phone.format(value)
             except PhoneNotCorrect:
                 buttons: list[list[InlineKeyboardButton]] = await _buttons(object.from_user.id, parameter)
                 try:

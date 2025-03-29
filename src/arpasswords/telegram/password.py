@@ -1,39 +1,18 @@
 import asyncio
 import html
-import secrets
-import string
 
 from aiogram.exceptions import TelegramBadRequest
 from aiogram.filters import Command
 from aiogram.types import Message
 
 from . import base
+from .. import utilities
 from ..lang import _ as lang
-
-
-def _generate(length: int = 20) -> str:
-    while True:
-        password: str = ""
-        for _ in range(length):
-            password += secrets.choice(string.ascii_letters + string.digits + string.punctuation)
-
-        has_upper_letters: bool = any(char in password for char in string.ascii_uppercase)
-        has_lower_letters: bool = any(char in password for char in string.ascii_lowercase)
-        has_digits: bool = any(char in password for char in string.digits)
-        has_punctuation: bool = any(char in password for char in string.punctuation)
-        power: int = has_upper_letters + has_lower_letters + has_digits + has_punctuation
-
-        if power == 4:
-            return password
-
-
-async def generate(length: int = 20) -> str:
-    return await asyncio.to_thread(_generate, length)
 
 
 @base.message(Command("generate_passwords"), ignore_key=True)
 async def _generate_passwords(message: Message) -> None:
-    passwords: list[str] = [f"\t\t• <code>{html.escape(await generate())}</code>" for _ in range(10)]
+    passwords: list[str] = [f"\t\t• <code>{html.escape(await utilities.password.generate())}</code>" for _ in range(10)]
     text: str = (await lang("commands", "generate_passwords_message")).format(passwords="\n".join(passwords))
     bot_message: Message = await message.answer(text)
     await asyncio.sleep(60**2)

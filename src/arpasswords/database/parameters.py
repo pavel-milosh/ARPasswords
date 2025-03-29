@@ -9,13 +9,7 @@ from .. import crypto
 from ..config import _ as config
 
 
-async def _do(
-        db: Connection,
-        user_id: int,
-        label: str,
-        parameter: str,
-        value: str | None = None
-) -> str | None:
+async def _do(db: Connection, user_id: int, label: str, parameter: str, value: str | None = None) -> str | None:
     try:
         if value is None:
             query: str = f"SELECT {parameter} FROM passwords WHERE label = ?"

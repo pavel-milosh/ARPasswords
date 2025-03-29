@@ -1,11 +1,10 @@
 import asyncio
 import os
-from typing import Any
 
 import aiosqlite
 from aiogram import F
 from aiogram.exceptions import TelegramBadRequest
-from aiogram.types import  CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup, Message
+from aiogram.types import CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup, Message
 
 from .. import base
 from ... import database

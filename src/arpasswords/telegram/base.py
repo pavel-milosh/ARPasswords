@@ -15,9 +15,9 @@ from ..lang import _ as lang
 
 
 bot: Bot = Bot(config()["token"], default=DefaultBotProperties(parse_mode=ParseMode.HTML))
-_dp: Dispatcher = Dispatcher()
 router: Router = Router()
 alt_router: Router = Router()
+_dp: Dispatcher = Dispatcher()
 
 
 def message(*args, router: Router = router, ignore_key: bool = False, **kwargs) -> Callable:
@@ -41,6 +41,7 @@ def message(*args, router: Router = router, ignore_key: bool = False, **kwargs) 
             return await func(message, **filtered_kwargs)
         return wrapper
     return decorator
+
 
 async def start() -> None:
     commands: list[str] = config()["commands"]

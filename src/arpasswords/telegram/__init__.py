@@ -1,4 +1,4 @@
-from . import records, base, cancel, key, password, start
+from . import base, cancel, key, password, records, start
 from .base import start
 
 

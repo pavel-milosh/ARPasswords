@@ -17,7 +17,7 @@ from ...lang import _ as lang
 
 class DeleteAll(StatesGroup):
     active: State = State()
-    bot_messsage: Message
+    bot_message: Message
 
 
 @base.router.callback_query(F.data.startswith("delete_record"))

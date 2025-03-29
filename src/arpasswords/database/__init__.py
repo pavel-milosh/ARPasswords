@@ -4,7 +4,7 @@ import aiosqlite
 
 from . import exceptions
 from .operations import add, delete
-from .parameters import values, parameter, additional_parameters
+from .parameters import additional_parameters, parameter, values
 
 
 __all__: list[str] = [
@@ -13,9 +13,9 @@ __all__: list[str] = [
     "add",
     "delete",
     # parameters.py
-    "values",
+    "additional_parameters",
     "parameter",
-    "additional_parameters"
+    "values"
 ]
 
 
