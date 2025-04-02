@@ -3,6 +3,7 @@ import functools
 import os
 from typing import Any, Callable
 
+import aiofiles.os
 import keyring
 from aiogram import Bot, Dispatcher, Router
 from aiogram.client.default import DefaultBotProperties
@@ -26,18 +27,14 @@ def message(*args, router: Router = router, ignore_key: bool = False, **kwargs) 
         @router.message(*args, **kwargs)
         async def wrapper(message: Message, **kwargs) -> Any:
             key: str | None = await asyncio.to_thread(keyring.get_password, "keys", str(message.from_user.id))
-
-            if not os.path.exists(os.path.join("users", f"{message.from_user.id}.db")):
+            if not await aiofiles.os.path.exists(os.path.join("users", f"{message.from_user.id}.db")):
                 await database.create(message.from_user.id)
-
             if not ignore_key and key is None:
                 await message.reply(await lang("commands", "key_not_installed"))
                 return
-
             await message.delete()
-
             # noinspection PyUnresolvedReferences
-            filtered_kwargs = {k: v for k, v in kwargs.items() if k in func.__annotations__}
+            filtered_kwargs = {key: valuer for key, valuer in kwargs.items() if key in func.__annotations__}
             return await func(message, **filtered_kwargs)
         return wrapper
     return decorator

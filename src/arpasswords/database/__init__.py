@@ -5,6 +5,7 @@ import aiosqlite
 from . import exceptions
 from .operations import add, delete
 from .parameters import additional_parameters, parameter, values
+from .. import logger
 
 
 __all__: list[str] = [
@@ -39,6 +40,7 @@ async def create(user_id: int) -> None:
                 card TEXT
             )
     """
+    await logger.add_logger(user_id)
     async with aiosqlite.connect(os.path.join("users", f"{user_id}.db")) as db:
         await db.execute(query)
         await db.commit()

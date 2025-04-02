@@ -1,4 +1,5 @@
 import asyncio
+import logging
 import os
 
 import aiosqlite
@@ -7,7 +8,7 @@ from aiogram.exceptions import TelegramBadRequest
 from aiogram.types import CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup, Message
 
 from .. import base
-from ... import database
+from ... import database, logger
 from ...config import _ as config
 from ...lang import _ as lang
 
@@ -43,6 +44,7 @@ async def record(user_id: int, label: str) -> None:
         (await lang("records", "info")).format(label=label, info=text),
         reply_markup=InlineKeyboardMarkup(inline_keyboard=buttons)
     )
+    await logger.user(logging.INFO, user_id, "record_viewed", label=label)
     await asyncio.sleep(120)
     try:
         await bot_message.delete()

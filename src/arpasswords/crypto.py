@@ -60,5 +60,4 @@ async def decrypt(text: str, user_id: int) -> str:
     try:
         return await asyncio.to_thread(_decrypt, text, user_id)
     except InvalidTag:
-        exception: Decryption = Decryption(user_id)
-        raise exception
+        raise Decryption(user_id)

@@ -1,11 +1,12 @@
 import json
+import logging
 from json import JSONDecodeError
 from sqlite3 import OperationalError
 
 from aiosqlite import Connection
 
 from . import operations
-from .. import crypto
+from .. import crypto, logger
 from ..config import _ as config
 
 
@@ -26,9 +27,10 @@ async def _do(db: Connection, user_id: int, label: str, parameter: str, value: s
             elif parameter != "label":
                 value = await crypto.encrypt(value, user_id)
             await db.execute(query, (value, label))
+            await logger.user(logging.INFO, user_id, "updated_parameter_value", label=label, parameter=parameter)
     except OperationalError as e:
         if "no such column" in str(e):
-            await operations.update_legacy(db)
+            await operations.update_legacy(db, user_id)
             return await _do(db, user_id, label, parameter, value)
         else:
             raise e

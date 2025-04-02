@@ -3,11 +3,11 @@ from setuptools import setup, find_packages
 
 setup(
     name="ARPasswords",
-    version="1.3.1",
+    version="1.4.0",
     author="Pavel Milosh",
     author_email="code@pavelmilosh.com",
     description="Multilanguage password manager with encryption for telegram",
-    url="https://github.com/pavel-milosh/ARPassword",
+    url="https://github.com/pavel-milosh/ARPasswords",
     packages=find_packages(where="src"),
     package_dir={"": "src"},
     include_package_data=True,
@@ -15,12 +15,13 @@ setup(
         "arpasswords": ["locales/*"],
     },
     install_requires=[
+        "aiofiles",
         "aiogram",
         "aiosqlite",
-        "pyotp",
+        "cryptography",
         "keyring",
         "keyrings.alt",
-        "cryptography"
+        "pyotp"
     ],
     entry_points={
         "console_scripts": [

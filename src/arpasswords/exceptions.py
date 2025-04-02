@@ -1,4 +1,6 @@
-from . import telegram
+import logging
+
+from . import logger, telegram
 from .lang import _ as lang
 
 
@@ -17,6 +19,7 @@ class Decryption(ARPasswordsException):
 
     async def message(self) -> None:
         await telegram.base.bot.send_message(self.user_id, await lang("exceptions", "decryption"))
+        await logger.user(logging.ERROR, self.user_id, "decryption_error")
 
 
 class PhoneNotCorrect(ARPasswordsException):

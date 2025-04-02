@@ -1,26 +1,30 @@
+import logging
 from sqlite3 import IntegrityError, OperationalError
 
 from aiosqlite import Connection
 
 from .exceptions import LabelNotUnique
+from .. import logger
 
 
-async def add(db: Connection, label: str) -> None:
+async def add(db: Connection, user_id: int, label: str) -> None:
     query: str = "INSERT INTO passwords (label) VALUES (?)"
     try:
         await db.execute(query, (label,))
+        await logger.user(logging.INFO, user_id, "added_record", label=label)
     except IntegrityError as e:
         if str(e) == "UNIQUE constraint failed: passwords.label":
-            raise LabelNotUnique()
+            raise LabelNotUnique(user_id, label)
         raise e
 
 
-async def delete(db: Connection, label: str) -> None:
+async def delete(db: Connection, user_id: int, label: str) -> None:
     query: str = "DELETE FROM passwords WHERE label = ?"
     await db.execute(query, (label,))
+    await logger.user(logging.INFO, user_id, "deleted_record", label=label)
 
 
-async def update_legacy(db: Connection) -> None:
+async def update_legacy(db: Connection, user_id: int) -> None:
     queries: list[str] = [
         "ALTER TABLE passwords ADD COLUMN backup_codes TEXT",
         "ALTER TABLE passwords ADD COLUMN note TEXT",
@@ -36,3 +40,4 @@ async def update_legacy(db: Connection) -> None:
             await db.execute(query)
         except OperationalError:
             pass
+    await logger.user(logging.INFO, user_id, "updated_legacy_table")

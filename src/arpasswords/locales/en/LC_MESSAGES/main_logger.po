@@ -1,0 +1,11 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: en\n"
+
+msgid "started"
+msgstr "Bot started"
+
+msgid "new_user"
+msgstr "New user: {user_id}"

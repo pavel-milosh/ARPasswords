@@ -1,4 +1,5 @@
 import asyncio
+import logging
 import os
 
 import aiosqlite
@@ -11,7 +12,7 @@ from aiogram.types import CallbackQuery, InlineKeyboardButton, InlineKeyboardMar
 from keyring.errors import PasswordDeleteError
 
 from .. import base
-from ... import database
+from ... import database, logger
 from ...lang import _ as lang
 
 
@@ -38,7 +39,7 @@ async def _sure_delete_record(callback: CallbackQuery) -> None:
     label: str = callback.data[callback.data.find(" ") + 1:]
     text: str = (await lang("records", "deleted")).format(label=label)
     async with aiosqlite.connect(os.path.join("users", f"{callback.from_user.id}.db")) as db:
-        await database.delete(db, label)
+        await database.delete(db, callback.from_user.id, label)
         await db.commit()
     await callback.message.edit_text(text)
     await callback.answer(text)
@@ -62,5 +63,6 @@ async def _delete_all_active(message: Message, state: FSMContext) -> None:
         except PasswordDeleteError:
             pass
         await bot_message.edit_text(await lang("commands", "delete_all_deleted"))
+        await logger.user(logging.INFO, message.from_user.id, "deleted_all")
     else:
         await bot_message.edit_text(await lang("commands", "delete_all_not_deleted"))

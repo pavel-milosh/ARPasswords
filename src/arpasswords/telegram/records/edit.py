@@ -1,3 +1,4 @@
+import html
 import os
 from collections import Counter
 
@@ -61,7 +62,8 @@ async def _edit(callback: CallbackQuery, state: FSMContext) -> None:
     parameter_text: str = (await lang("parameters", parameter)).capitalize()
     text: str = (await lang("edit", "new_value_for_parameter")).format(parameter=parameter_text)
     if parameter == "password":
-        text += "\n" + (await lang("edit", "password_note")).format(password=await utilities.password.generate())
+        password: str = html.escape(await utilities.password.generate())
+        text += "\n" + (await lang("edit", "password_note")).format(password=password)
     elif parameter == "backup_codes":
         text += "\n" + await lang("edit", "backup_codes_note")
     buttons: list[list[InlineKeyboardButton]] = await _buttons(callback.message.chat.id, parameter)

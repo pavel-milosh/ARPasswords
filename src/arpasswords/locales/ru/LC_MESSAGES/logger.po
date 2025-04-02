@@ -1,0 +1,59 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ru\n"
+
+msgid "first_launch"
+msgstr "Первый запуск бота"
+
+msgid "label_not_unique"
+msgstr "Попытался создать запись с существующей меткой. Метка: {label}"
+
+msgid "added_record"
+msgstr "Создал запись {label}"
+
+msgid "deleted_record"
+msgstr "Удалил запись {label}"
+
+msgid "deleted_all"
+msgstr "Удалил все данные"
+
+msgid "key_wrong"
+msgstr "Попытался установить неверный ключ"
+
+msgid "key_installed"
+msgstr "Ключ установлен"
+
+msgid "backup_done"
+msgstr "Резервная копия создана. Логи собраны"
+
+msgid "passwords_generated"
+msgstr "Сгенерировал 10 паролей"
+
+msgid "record_viewed"
+msgstr "Запись просмотрена. Метка: {label}"
+
+msgid "backup_codes_viewed"
+msgstr "Коды восстановления просмотрены. Метка: {label}"
+
+msgid "note_viewed"
+msgstr "Примечание просмотрено. Метка: {label}"
+
+msgid "totp_viewed"
+msgstr "TOTP просмотрен. Метка: {label}"
+
+msgid "totp_code_viewed"
+msgstr "TOTP-код просмотрен. Метка: {label}"
+
+msgid "updated_legacy_table"
+msgstr "Таблица обновлена успешно!"
+
+msgid "decryption_error"
+msgstr "Ошибка расшифровки"
+
+msgid "updated_parameter_value"
+msgstr "Обновлено значение параметра {parameter}. Метка: {label}"
+
+msgid "schedule"
+msgstr "Ключ шифрования удален из защищенной ячейки памяти программы. Логи очищены"

@@ -1,12 +1,15 @@
 import asyncio
 import os
 
-from arpasswords import telegram, schedule
+import aiofiles.os
+
+from arpasswords import logger, schedule, telegram
 
 
 async def a_main() -> None:
-    if not os.path.exists("users"):
+    if not await aiofiles.os.path.exists("users"):
         os.mkdir("users")
+    await logger.setup()
     await schedule.setup()
     await telegram.start()
 

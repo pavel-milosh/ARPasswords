@@ -1,4 +1,5 @@
 import asyncio
+import logging
 import os
 
 import aiosqlite
@@ -7,7 +8,7 @@ from aiogram.filters import Command
 from aiogram.types import Message
 
 from .. import base
-from ... import database
+from ... import database, logger
 from ...lang import _ as lang
 
 
@@ -23,6 +24,7 @@ async def _backup_codes(message: Message) -> None:
     parameter: str = (await lang("parameters", "backup_codes")).capitalize()
     text: str = (await lang("parameters", "show")).format(parameter=parameter, value=backup_codes)
     bot_message: Message = await message.answer(text)
+    await logger.user(logging.INFO, message.from_user.id, "backup_codes_viewed", label=label)
     await asyncio.sleep(120)
     try:
         await bot_message.delete()

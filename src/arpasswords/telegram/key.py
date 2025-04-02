@@ -1,5 +1,6 @@
 import asyncio
 import datetime
+import logging
 import os
 
 import aiosqlite
@@ -12,7 +13,7 @@ from aiogram.fsm.state import State, StatesGroup
 from aiogram.types import CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup, Message
 
 from . import base, cancel
-from .. import database
+from .. import database, logger
 from ..exceptions import Decryption
 from ..config import _ as config
 from ..lang import _ as lang
@@ -83,6 +84,7 @@ async def _enter_key_active(message: Message, state: FSMContext) -> None:
                     await lang("commands", "key_wrong"),
                     reply_markup=InlineKeyboardMarkup(inline_keyboard=[[await cancel.button()]])
                 )
+                await logger.user(logging.INFO, message.from_user.id, "key_wrong")
             except TelegramBadRequest:
                 pass
             finally:
@@ -90,5 +92,6 @@ async def _enter_key_active(message: Message, state: FSMContext) -> None:
                 return
     await state.clear()
     await bot_message.edit_text((await lang("commands", "key_installed")).format(key=message.text))
+    await logger.user(logging.INFO, message.from_user.id, "key_installed")
     await asyncio.sleep(10)
     await bot_message.delete()

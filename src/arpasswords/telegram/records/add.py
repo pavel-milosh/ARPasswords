@@ -35,8 +35,9 @@ async def _add_record_active(message: Message, state: FSMContext) -> None:
     bot_message: Message = await state.get_value("bot_message")
     async with aiosqlite.connect(os.path.join("users", f"{message.from_user.id}.db")) as db:
         try:
-            await database.add(db, message.text)
-        except LabelNotUnique:
+            await database.add(db, message.from_user.id, message.text)
+        except LabelNotUnique as e:
+            await e.log()
             keyboard: InlineKeyboardMarkup = InlineKeyboardMarkup(inline_keyboard=[[await cancel.button()]])
             await bot_message.edit_text(await lang("records", "label_not_unique"), reply_markup=keyboard)
             return
