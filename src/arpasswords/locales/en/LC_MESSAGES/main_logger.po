@@ -7,5 +7,8 @@ msgstr ""
 msgid "started"
 msgstr "Bot started"
 
+msgid "storage_reencrypted"
+msgstr "Storage has been reencrypted ans cleared"
+
 msgid "new_user"
 msgstr "New user: {user_id}"

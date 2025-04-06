@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="ARPasswords",
-    version="1.4.0",
+    version="1.4.1",
     author="Pavel Milosh",
     author_email="code@pavelmilosh.com",
     description="Multilanguage password manager with encryption for telegram",
@@ -18,9 +18,8 @@ setup(
         "aiofiles",
         "aiogram",
         "aiosqlite",
+        "cachetools",
         "cryptography",
-        "keyring",
-        "keyrings.alt",
         "pyotp"
     ],
     entry_points={

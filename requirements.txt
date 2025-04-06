@@ -1,7 +1,6 @@
 aiofiles
 aiogram
 aiosqlite
+cachetools
 cryptography
-keyring
-keyrings.alt
 pyotp

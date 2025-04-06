@@ -1,10 +1,8 @@
 import asyncio
-import datetime
 import logging
 import os
 
 import aiosqlite
-import keyring
 from aiogram import F
 from aiogram.exceptions import TelegramBadRequest
 from aiogram.filters import Command
@@ -16,6 +14,7 @@ from . import base, cancel
 from .. import database, logger
 from ..exceptions import Decryption
 from ..config import _ as config
+from ..keys import _ as keys
 from ..lang import _ as lang
 
 
@@ -26,11 +25,10 @@ class EnterKey(StatesGroup):
 
 @base.message(Command("key"), ignore_key=True)
 async def _key(message: Message, state: FSMContext) -> None:
-    key: str | None = await asyncio.to_thread(keyring.get_password, "keys", str(message.from_user.id))
     buttons: list[list[InlineKeyboardButton]] = [
         [InlineKeyboardButton(text=await lang("commands", "key_button"), callback_data="enter_key")]
     ]
-    text: str = (await lang("commands", "key_message")).format(key=key, hours=24 - datetime.datetime.now().hour)
+    text: str = (await lang("commands", "key_message")).format(key=await keys.get(message.from_user.id), time=keys.time)
     bot_message = await message.answer(text, reply_markup=InlineKeyboardMarkup(inline_keyboard=buttons))
     await state.update_data(bot_message=bot_message)
     await asyncio.sleep(120)
@@ -66,7 +64,7 @@ async def _enter_key_active(message: Message, state: FSMContext) -> None:
             pass
         finally:
             return
-    await asyncio.to_thread(keyring.set_password, "keys", str(message.from_user.id), message.text)
+    await keys.set(message.from_user.id, message.text)
     async with aiosqlite.connect(os.path.join("users", f"{message.from_user.id}.db")) as db:
         checked: bool = False
         try:
@@ -88,7 +86,7 @@ async def _enter_key_active(message: Message, state: FSMContext) -> None:
             except TelegramBadRequest:
                 pass
             finally:
-                await asyncio.to_thread(keyring.delete_password, "keys", str(message.from_user.id))
+                keys.delete(message.from_user.id)
                 return
     await state.clear()
     await bot_message.edit_text((await lang("commands", "key_installed")).format(key=message.text))

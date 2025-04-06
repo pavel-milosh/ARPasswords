@@ -1,10 +1,8 @@
-import asyncio
 import functools
 import os
 from typing import Any, Callable
 
 import aiofiles.os
-import keyring
 from aiogram import Bot, Dispatcher, Router
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
@@ -12,6 +10,7 @@ from aiogram.types import BotCommand, Message
 
 from .. import database
 from ..config import _ as config
+from ..keys import _ as keys
 from ..lang import _ as lang
 
 
@@ -26,10 +25,9 @@ def message(*args, router: Router = router, ignore_key: bool = False, **kwargs) 
         @functools.wraps(func)
         @router.message(*args, **kwargs)
         async def wrapper(message: Message, **kwargs) -> Any:
-            key: str | None = await asyncio.to_thread(keyring.get_password, "keys", str(message.from_user.id))
             if not await aiofiles.os.path.exists(os.path.join("users", f"{message.from_user.id}.db")):
                 await database.create(message.from_user.id)
-            if not ignore_key and key is None:
+            if not ignore_key and await keys.get(message.from_user.id) is None:
                 await message.reply(await lang("commands", "key_not_installed"))
                 return
             await message.delete()
