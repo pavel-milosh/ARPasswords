@@ -15,7 +15,7 @@ async def a_main() -> None:
         os.mkdir("users")
     await logger.setup()
     await schedule.setup()
-    await telegram.setup()
+    await telegram.start()
 
 
 def main() -> None:
